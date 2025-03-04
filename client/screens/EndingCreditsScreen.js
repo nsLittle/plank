@@ -21,8 +21,9 @@ export default function WelcomeScreen() {
       <View style={styles.body}>
         <Text style={styles.bodyTitleText}>Ending Credits</Text>
 
-        <View style={styles.attribution}>
-          <Text>Attribution</Text>
+        <View style={styles.attributionContainer}>
+          <Text style={styles.attributionBold}>Attribution for:</Text>
+          <Text style={styles.attribution}>Favicon</Text>
           <a
             href="https://www.flaticon.com/free-icons/plank"
             title="plank icons">
@@ -30,11 +31,13 @@ export default function WelcomeScreen() {
           </a>
         </View>
 
-        <View style={styles.buttonRow}>
+        <View style={styles.buttonColumn}>
           <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => navigation.navigate("LogoutScreen")}>
-            <Text style={styles.loginButtonText}>Logout ▶</Text>
+            style={styles.backButton}
+            onPress={() => navigation.navigate("WelcomeScreen")}>
+            <Text style={styles.backButtonText}>
+              Return to Welcome Screen ◀
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -67,15 +70,13 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     width: 225,
   },
-  bodyIntroInviteText: {
-    fontSize: 12,
-    paddingTop: 15,
-    color: "#6A8CAF",
-    textDecorationLine: "underline",
+  attributionBold: {
     fontWeight: "bold",
+    marginBottom: 10,
   },
-  buttonRow: {
-    flexDirection: "row",
+
+  buttonColumn: {
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -83,33 +84,17 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 50,
   },
-  loginButton: {
-    backgroundColor: "#A51115",
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: 150,
-    height: 45,
-    justifyContent: "center",
-  },
-  loginButtonText: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  createAccountButton: {
+  backButton: {
     backgroundColor: "#D3D3D3",
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 20,
     alignItems: "center",
-    width: 150,
+    width: 300,
     height: 45,
     justifyContent: "center",
   },
-  createAccountButtonText: {
+  backButtonText: {
     color: "black",
     fontSize: 12,
     textAlign: "center",

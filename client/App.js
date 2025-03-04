@@ -5,7 +5,10 @@ import { UserProvider } from "./context/UserContext";
 import { PaperProvider } from "react-native-paper";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import PlankVisualScreen from "./screens/PlankVisualScreen";
-
+import LoginScreen from "./screens/LoginScreen";
+import PlankScreen from "./screens/PlankScreen";
+import DefaultScreen from "./screens/DefaultScreen";
+import EndingCreditsScreen from "./screens/EndingCreditsScreen";
 import Header from "./component/Header";
 
 const Stack = createStackNavigator();
@@ -25,6 +28,13 @@ export default function App() {
               name="PlankVisualScreen"
               component={PlankVisualScreen}
             />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="PlankScreen" component={PlankScreen} />
+            <Stack.Screen
+              name="EndingCreditsScreen"
+              component={EndingCreditsScreen}
+            />
+            <Stack.Screen name="DefaultScreen" component={DefaultScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>

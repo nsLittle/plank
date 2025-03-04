@@ -35,9 +35,9 @@ export default function WelcomeScreen() {
 
         <View style={styles.buttonRow}>
           <TouchableOpacity
-            style={styles.createAccountButton}
-            onPress={() => navigation.navigate("CreateAccountScreen")}>
-            <Text style={styles.createAccountButtonText}>Create Account ▶</Text>
+            style={styles.noAccountButton}
+            onPress={() => navigation.navigate("PlankScreen")}>
+            <Text style={styles.noAccountButtonText}>NO ACCOUNT OPTION ▶</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   loginButton: {
-    backgroundColor: "#A51115",
+    backgroundColor: "#bc4598",
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 20,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  createAccountButton: {
+  noAccountButton: {
     backgroundColor: "#D3D3D3",
     borderRadius: 25,
     paddingVertical: 15,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: "center",
   },
-  createAccountButtonText: {
+  noAccountButtonText: {
     color: "black",
     fontSize: 12,
     textAlign: "center",

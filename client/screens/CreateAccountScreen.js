@@ -1,11 +1,11 @@
 import {
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
+  View,
   Text,
   TouchableOpacity,
-  View,
+  Linking,
 } from "react-native";
 import {
   heightPercentageToDP as hp,
@@ -13,27 +13,27 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 
-export default function PlankVisualScreen() {
+export default function CreateAccountScreen() {
   const navigation = useNavigation();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Pretty</Text>
+        <Text style={styles.bodyTitleText}>Create Account</Text>
 
-        <Image
-          source={require("../assets/images/plank.png")}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        <Text style={styles.bodyIntroText}>Stuff & Stuff</Text>
 
-        <View style={styles.buttonColumn}>
+        <View style={styles.buttonRow}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              Return to Welcome Screen ◀
-            </Text>
+            <Text style={styles.backButtonText}>Back ◀</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate("DefaultScreen")}>
+            <Text style={styles.loginButtonText}>Next ▶</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -60,11 +60,14 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     fontWeight: "bold",
   },
-  image: {
-    height: 500,
+  bodyIntroText: {
+    textAlign: "center",
+    fontSize: 14,
+    paddingBottom: 15,
+    width: 225,
   },
-  buttonColumn: {
-    flexDirection: "column",
+  buttonRow: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -72,13 +75,29 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 50,
   },
+  loginButton: {
+    backgroundColor: "#A51115",
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    width: 150,
+    height: 45,
+    justifyContent: "center",
+  },
+  loginButtonText: {
+    color: "white",
+    fontSize: 12,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
   backButton: {
     backgroundColor: "#D3D3D3",
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 20,
     alignItems: "center",
-    width: 300,
+    width: 150,
     height: 45,
     justifyContent: "center",
   },
