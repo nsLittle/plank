@@ -1,12 +1,57 @@
+import { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
+  const navigation = useNavigation();
+
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
+
+  const toggleMenu = () => {
+    setMenuVisible(true);
+  };
+
+  const closeMenus = () => {
+    setTimeout(() => {
+      setMenuVisible(false);
+    }, 2000);
+  };
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.header}>
+        <TouchableOpacity
+          onLayout={(event) => {
+            const { x, y, width, height } = event.nativeEvent.layout;
+            setMenuPosition({ left: x, top: y });
+          }}
+          onPress={toggleMenu}
+          // onPressOut={closeMenus}
+        >
+          <Ionicons name="menu" size={32} style={[styles.menuIcon]}></Ionicons>
+        </TouchableOpacity>
         <Text style={styles.headerText}>PlankApp</Text>
       </View>
+
+      {menuVisible && (
+        <View
+          style={[styles.menuList, { left: 25, top: menuPosition.top + 10 }]}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("WelcomeScreen", {})}>
+            <Text style={styles.menuItem}>Welcome Screen</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PlankTypeScreen", {})}>
+            <Text style={styles.menuItem}>Plank Types</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PlankScreen", {})}>
+            <Text style={styles.menuItem}>Start Planks</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
@@ -30,10 +75,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 70,
   },
+  menuIcon: {
+    color: "#000",
+    zIndex: 20,
+    position: "relative",
+  },
   headerText: {
     textAlign: "center",
     flex: 1,
     fontSize: 30,
     color: "white",
+  },
+  menuList: {
+    zIndex: 9999,
+    elevation: 10,
+    backgroundColor: "#FFF",
+    position: "absolute",
+    top: 100,
+    left: 20,
+    padding: 10,
+    width: "80%",
+    maxWidth: 250,
+    borderRadius: 5,
+    boxShadow: "0px 2px 3px rgba(0, 0, 0, 0.2)",
+    borderWidth: 1,
+    borderColor: "#CCC",
+  },
+  menuItem: {
+    padding: 10,
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCC",
   },
 });

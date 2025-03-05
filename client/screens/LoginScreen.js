@@ -1,9 +1,12 @@
+import * as SecureStore from "expo-secure-store";
+import { useState } from "react";
 import {
   Platform,
   ScrollView,
   StyleSheet,
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   Linking,
 } from "react-native";
@@ -12,36 +15,116 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
 
-  const handleLogin = () => {};
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleLogin = async () => {
+    console.log("I'm here to handle login...");
+    console.log("Email: ", email, "Password: ", password);
+
+    if (!email || !password || !confirmPassword) {
+      setDialogMessage("All fields are required.");
+      setShowDialog(true);
+      return;
+    }
+
+    console.log("Password & Password: ", password, confirmPassword);
+
+    if (password !== confirmPassword) {
+      setDialogMessage("Passwords do not match.");
+      setShowDialog(true);
+      return;
+    }
+
+    try {
+      console.log("Now I'm really here to handle login...");
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      console.log("Data: ", data);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      console.log("Response:", data);
+
+      if (data.token) {
+        await SecureStore.setItemAsync("authToken", data.token);
+      } else {
+        throw new Error("Token is missing from response");
+      }
+
+      setDialogMessage("Account created successfully!");
+      setShowDialog(true);
+
+      navigation.navigate("PlankScreen");
+    } catch (error) {
+      console.log("Error: ", error);
+      setDialogMessage("Signup Failed");
+      setShowDialog(true);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.body}>
         <Text style={styles.bodyTitleText}>Login</Text>
 
-        <TextInput style={styles.input} placeholder="Email"></TextInput>
-        <TextInput style={styles.input} placeholder="Password"></TextInput>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
+        />
 
         <View style={styles.buttonRow}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
+            onPress={() => navigation.navigate("DefaultScreen")}>
+            <Text style={styles.backButtonText} onPress={handleLogin}>
               Return to Welcome Screen ◀
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => navigation.navigate("DefaultScreen")}>
-            <Text style={styles.loginButtonText} onPress={handleLogin}>
-              Login ▶
-            </Text>
+            onPress={async () => {
+              console.log("Login button pressed");
+              const saved = await handleLogin();
+              if (saved) {
+                navigation.navigate("PlankScreen");
+              }
+            }}>
+            <Text style={styles.loginButtonText}>Login ▶</Text>
           </TouchableOpacity>
         </View>
       </View>

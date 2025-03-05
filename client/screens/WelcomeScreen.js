@@ -37,7 +37,13 @@ export default function WelcomeScreen() {
           <TouchableOpacity
             style={styles.noAccountButton}
             onPress={() => navigation.navigate("PlankScreen")}>
-            <Text style={styles.noAccountButtonText}>NO ACCOUNT OPTION ▶</Text>
+            <Text style={styles.noAccountButtonText}>No Account Option ▶</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.noAccountButton}
+            onPress={() => navigation.navigate("CreateAccountScreen")}>
+            <Text style={styles.noAccountButtonText}>Create Account ▶</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

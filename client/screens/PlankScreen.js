@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-
 import {
   Alert,
   Linking,
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Button, Dialog, Portal } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -24,6 +24,9 @@ export default function PlankScreen() {
   const [time, setTime] = useState(0);
   const timerRef = useRef(null);
   const [laps, setLaps] = useState([]);
+
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [showDialog, setShowDialog] = useState("");
 
   let timer;
 
@@ -42,22 +45,44 @@ export default function PlankScreen() {
 
   const handleSaveLap = () => {
     if (time === 0) {
-      Alert.alert("No time recorded", "Start the timer before saving.");
+      setDialogMessage("No time recorded", "Start the timer before saving.");
+      setShowDialog(true);
       return;
     }
 
     setLaps([...laps, time]);
-    Alert.alert("Lap Saved", `Plank time: ${time} seconds`);
+    setDialogMessage("Lap Saved", `Plank time: ${time} seconds`);
+    setShowDialog(true);
 
     setTime(0);
   };
 
   const handleSaveToAccount = () => {
-    Alert.alert("Create an account", "Sign up to save your progress.");
+    setDialogMessage("Create an account", "Sign up to save your progress.");
+    setShowDialog(true);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Portal>
+        <Dialog
+          visible={showDialog}
+          onDismiss={() => setShowDialog(false)}
+          style={styles.dialog}>
+          <Dialog.Title style={styles.dialogTitle}>Alert</Dialog.Title>
+          <Dialog.Content>
+            <Text>{dialogMessage}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={() => setShowDialog(false)}
+              labelStyle={styles.dialogButton}>
+              OK
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       <View style={styles.body}>
         <Text style={styles.bodyTitleText}>Let's Plank</Text>
 
@@ -73,32 +98,17 @@ export default function PlankScreen() {
           <Text style={styles.buttonText}>Save Lap</Text>
         </TouchableOpacity>
 
+        <Text style={styles.lapsTitle}>Today's Laps</Text>
+        {laps.map((lap, index) => (
+          <Text key={index} style={styles.lapText}>
+            Lap {index + 1}: {lap} seconds
+          </Text>
+        ))}
+
         <TouchableOpacity
           style={styles.disabledButton}
           onPress={handleSaveToAccount}>
-          <Text style={styles.buttonText}>
-            Save to Account (Sign up required)
-          </Text>
-        </TouchableOpacity>
-
-        <Text style={styles.lapsTitle}>Laps</Text>
-        {laps.map((lap, index) => (
-          <Text key={index} style={styles.lapText}>
-            Lap {index + 1}: {lap} sec
-          </Text>
-        ))}
-      </View>
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.navigate("WelcomeScreen")}>
-          <Text style={styles.backButtonText}>Back ◀</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => navigation.navigate("DefaultScreen")}>
-          <Text style={styles.loginButtonText}>Next ▶</Text>
+          <Text style={styles.buttonText}>Save to Account</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -106,6 +116,18 @@ export default function PlankScreen() {
 }
 
 const styles = StyleSheet.create({
+  dialog: {
+    backgroundColor: "white",
+  },
+  dialogTitle: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  dialogButton: {
+    color: "green",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
   container: {
     flexGrow: 1,
     backgroundColor: "white",
@@ -123,12 +145,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingBottom: 30,
     fontWeight: "bold",
-  },
-  bodyIntroText: {
-    textAlign: "center",
-    fontSize: 14,
-    paddingBottom: 15,
-    width: 225,
   },
   title: {
     fontSize: 24,
@@ -153,10 +169,11 @@ const styles = StyleSheet.create({
     width: 200,
   },
   disabledButton: {
-    backgroundColor: "green",
+    backgroundColor: "#4A9F50",
     padding: 15,
     borderRadius: 10,
     marginTop: 10,
+    width: 200,
   },
   buttonText: {
     color: "white",
@@ -168,46 +185,5 @@ const styles = StyleSheet.create({
   },
   lapText: {
     fontSize: 16,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 20,
-    gap: 15,
-    marginTop: 50,
-  },
-  loginButton: {
-    backgroundColor: "#bc4598",
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: 150,
-    height: 45,
-    justifyContent: "center",
-  },
-  loginButtonText: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  backButton: {
-    backgroundColor: "#D3D3D3",
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: 150,
-    height: 45,
-    justifyContent: "center",
-  },
-  backButtonText: {
-    color: "black",
-    fontSize: 12,
-    textAlign: "center",
-    fontWeight: "bold",
   },
 });

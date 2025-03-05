@@ -13,7 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 
-export default function PlankVisualScreen() {
+export default function PlankTypeScreen() {
   const navigation = useNavigation();
 
   return (
