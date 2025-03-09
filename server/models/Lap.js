@@ -10,6 +10,18 @@ const LapSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  lapType: {
+    type: String,
+    enum: [
+      "basic plank",
+      "elbow plank",
+      "left leg raise plank",
+      "right leg raise plank",
+      "left side plank",
+      "right side plank",
+    ],
+    required: true,
+  },
   time: {
     type: Number,
     required: true,

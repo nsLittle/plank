@@ -87,10 +87,10 @@ export default function LoginScreen() {
         ) : (
           <Text>No lap data available.</Text>
         )}
-
+        {/* 
         {showDialog && (
           <Text style={styles.dialogMessage}>{dialogMessage}</Text>
-        )}
+        )} */}
       </View>
     </ScrollView>
   );

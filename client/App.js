@@ -20,6 +20,7 @@ import PlankTypeScreen from "./screens/PlankTypeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import PlankScreen from "./screens/PlankScreen";
+import PlankNoAccountScreen from "./screens/PlankNoAccountScreen";
 import DataScreen from "./screens/DataScreen";
 import LogoutScreen from "./screens/LogoutScreen";
 import DefaultScreen from "./screens/DefaultScreen";
@@ -89,6 +90,10 @@ export default function App() {
               component={CreateAccountScreen}
             />
             <Stack.Screen name="PlankScreen" component={PlankScreen} />
+            <Stack.Screen
+              name="PlankNoAccountScreen"
+              component={PlankNoAccountScreen}
+            />
             <Stack.Screen name="DataScreen" component={DataScreen} />
             <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
             <Stack.Screen

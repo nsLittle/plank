@@ -15,20 +15,9 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
-import { UserContext } from "../context/UserContext";
 
-export default function PlankScreen() {
+export default function PlankNoAccountScreen() {
   const navigation = useNavigation();
-
-  const { userContext, setUserContext } = useContext(UserContext) || {};
-
-  useEffect(() => {
-    if (userContext) {
-      console.log("User Context: ", userContext);
-      console.log("User Id: ", userContext.userId);
-      console.log("User Email: ", userContext.email);
-    }
-  }, [userContext]);
 
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState("");
@@ -53,7 +42,7 @@ export default function PlankScreen() {
     }
   };
 
-  const handleLogLap = (data) => {
+  const handleSaveLap = (data) => {
     if (isActive) {
       setDialogMessage(
         "Stop the timer first",
@@ -75,93 +64,6 @@ export default function PlankScreen() {
 
     setTime(0);
   };
-
-  const handleSaveToAccount = async () => {
-    if (!userContext.userId) {
-      setDialogMessage("Create an account", "Sign up to save your progress.");
-      setShowDialog(true);
-    }
-
-    if (laps.length === 0) {
-      console.error("No lap data to save.");
-      setDialogMessage("No lap data.  Save at least one lap before you save.");
-      setShowDialog(true);
-      return;
-    }
-
-    try {
-      const response = await fetch("http://192.168.1.174:8000/laps/saveLaps", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: userContext.email, laps }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log("Lap data saved:", data);
-      setDialogMessage("Laps successfully saved.");
-      setShowDialog(true);
-      navigation.navigate("DataScreen");
-    } catch (error) {
-      console.error("Failed to save lap data:", error);
-      setDialogMessage("Laps failed to save.");
-      setShowDialog(true);
-      return;
-    }
-  };
-
-  const [lapData, setLapData] = useState(null);
-
-  const handleFetchLaps = async () => {
-    console.log("I'm here to fetch lap data...");
-
-    try {
-      console.log("i'm in here...");
-
-      const response = await fetch("http://192.168.1.174:8000/laps/getLaps", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log("can i get out...");
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-
-      console.log("i'm still here...");
-
-      const data = await response.json();
-      console.log("Lap data retrieved:", data);
-
-      setLapData(Array.isArray(data.getLaps) ? data.getLaps : []);
-      console.log("Reformatted Lap Data: ", lapData);
-
-      // setDialogMessage("Laps successfully retrieved.");
-      // setShowDialog(true);
-    } catch (error) {
-      console.error("Failed to save lap data:", error);
-      setDialogMessage("Laps failed to load.");
-      setShowDialog(true);
-      setLapData([]);
-    }
-  };
-
-  useEffect(() => {
-    console.log("Updated Lap Data: ", lapData);
-  }, [lapData]);
-
-  useEffect(() => {
-    console.log("Plank Screen mounted");
-    handleFetchLaps();
-  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -188,14 +90,14 @@ export default function PlankScreen() {
         <Text style={styles.bodyTitleText}>Let's Plank</Text>
 
         <View style={styles.timerContainer}></View>
-        {/* <Text style={styles.title}>Plank Timer</Text> */}
+        <Text style={styles.title}>Plank Timer</Text>
         <Text style={styles.timer}>{time} sec</Text>
 
         <TouchableOpacity style={styles.button} onPress={handleStartStop}>
           <Text style={styles.buttonText}>{isActive ? "Stop" : "Start"}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.logLapButton} onPress={handleLogLap}>
+        <TouchableOpacity style={styles.buttonSaveLap} onPress={handleSaveLap}>
           <Text style={styles.buttonText}>Log Lap</Text>
         </TouchableOpacity>
 
@@ -205,25 +107,12 @@ export default function PlankScreen() {
             Lap {index + 1}: {lap} seconds
           </Text>
         ))}
-
-        {Array.isArray(lapData) && lapData.length > 0 ? (
-          <View style={styles.lapContainer}>
-            {lapData.map((lap, index) => (
-              <Text key={lap._id} style={styles.lapText}>
-                {new Date(lap.entryDate).toLocaleDateString()} | Lap # {lap.lap}{" "}
-                | {lap.lapType}| {lap.time}
-              </Text>
-            ))}
-          </View>
-        ) : (
-          <Text></Text>
-        )}
-
+        {/* 
         <TouchableOpacity
           style={styles.disabledButton}
-          onPress={handleSaveToAccount}>
-          <Text style={styles.disabledButtonText}>Save to Account</Text>
-        </TouchableOpacity>
+          onPress={() => navigation.navigate("PlankNoAccountScreen")}>
+          <Text style={styles.buttonText}>Save to Account</Text>
+        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );
@@ -268,31 +157,19 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginVertical: 20,
   },
-  lapsTitle: {
-    fontSize: 20,
-    marginTop: 20,
-  },
-  lapText: {
-    fontSize: 16,
-  },
   button: {
     backgroundColor: "#bc4598",
     padding: 15,
     borderRadius: 10,
     marginTop: 10,
-    width: 150,
-    height: 30,
-    textAlign: "center",
-    color: "white",
+    width: 200,
   },
-  logLapButton: {
+  buttonSaveLap: {
     backgroundColor: "#808080",
     padding: 15,
     borderRadius: 10,
     marginTop: 10,
-    width: 150,
-    textAlign: "center",
-    color: "white",
+    width: 200,
   },
   disabledButton: {
     backgroundColor: "#7a5581",
@@ -300,10 +177,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     width: 200,
-    textAlign: "center",
-    color: "white",
   },
-  disabledButtonText: {
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  lapsTitle: {
+    fontSize: 20,
+    marginTop: 20,
+  },
+  lapText: {
     fontSize: 16,
   },
 });

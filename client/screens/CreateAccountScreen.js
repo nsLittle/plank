@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import { setItemAsync } from "expo-secure-store";
 import { useState } from "react";
 import {
   Platform,
@@ -18,6 +19,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function CreateAccountScreen() {
+  console.log(SecureStore);
+  console.log("SecureStore methods:", Object.keys(SecureStore));
+
   const navigation = useNavigation();
 
   const [dialogMessage, setDialogMessage] = useState("");
@@ -58,7 +62,8 @@ export default function CreateAccountScreen() {
       console.log("Response:", data);
 
       if (data.token) {
-        await SecureStore.setItemAsync("authToken", data.token);
+        // await SecureStore.setItemAsync("authToken", data.token);
+        await setItemAsync("authToken", data.token);
       } else {
         throw new Error("Token is missing from response");
       }

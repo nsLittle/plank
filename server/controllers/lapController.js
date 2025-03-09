@@ -3,9 +3,24 @@ const Lap = require("../models/Lap");
 exports.saveLaps = async (req, res) => {
   console.log("At lap saving...");
   try {
-    const { email, laps } = req.body;
+    const { email, laps, lapType } = req.body;
 
-    if (!email || !laps || !Array.isArray(laps) || laps.length === 0) {
+    const validLapTypes = [
+      "basic plank",
+      "elbow plank",
+      "left leg raise plank",
+      "right leg raise plank",
+      "left side plank",
+      "right side plank",
+    ];
+
+    if (
+      !email ||
+      !laps ||
+      !lapType ||
+      !Array.isArray(laps) ||
+      laps.length === 0
+    ) {
       return res.status(400).json({ message: "Invalid data provided." });
     }
 
@@ -13,6 +28,7 @@ exports.saveLaps = async (req, res) => {
       laps.map((time, index) => ({
         email,
         lap: index + 1,
+        lapType,
         time,
       }))
     );

@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 
 export default function Header() {
   const navigation = useNavigation();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
+
+  const currentRoute = useNavigationState((state) => {
+    const route = state.routes[state.index];
+    return route.name;
+  });
 
   const toggleMenu = () => {
     setMenuVisible(true);
@@ -22,40 +27,66 @@ export default function Header() {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onLayout={(event) => {
-            const { x, y, width, height } = event.nativeEvent.layout;
-            setMenuPosition({ left: x, top: y });
-          }}
-          onPress={toggleMenu}>
-          <Ionicons name="menu" size={32} style={[styles.menuIcon]}></Ionicons>
-        </TouchableOpacity>
+        {currentRoute !== "WelcomeScreen" &&
+          currentRoute !== "LogoutScreen" && (
+            <TouchableOpacity
+              onLayout={(event) => {
+                const { x, y, width, height } = event.nativeEvent.layout;
+                setMenuPosition({ left: x, top: y });
+              }}
+              onPress={toggleMenu}>
+              <Ionicons
+                name="menu"
+                size={32}
+                style={[styles.menuIcon]}></Ionicons>
+            </TouchableOpacity>
+          )}
+
         <Text style={styles.headerText}>PlankApp</Text>
       </View>
 
       {menuVisible && (
         <View
           style={[styles.menuList, { left: 25, top: menuPosition.top + 10 }]}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("WelcomeScreen", {})}>
-            <Text style={styles.menuItem}>Welcome Screen</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PlankTypeScreen", {})}>
-            <Text style={styles.menuItem}>Plank Types</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PlankScreen", {})}>
-            <Text style={styles.menuItem}>Start Planks</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DataScreen", {})}>
-            <Text style={styles.menuItem}>Rank your Planks</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("LogoutScreen", {})}>
-            <Text style={styles.menuItem}>Logout Screen</Text>
-          </TouchableOpacity>
+          {currentRoute !== "WelcomeScreen" && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("WelcomeScreen", {})}>
+              <Text style={styles.menuItem}>Welcome Screen</Text>
+            </TouchableOpacity>
+          )}
+          {currentRoute !== "PlankTypeScreen" && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("PlankTypeScreen", {})}>
+              <Text style={styles.menuItem}>Plank Types</Text>
+            </TouchableOpacity>
+          )}
+          {currentRoute !== "PlankScreen" &&
+            currentRoute !== "PlankNoAccountScreen" && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("PlankScreen", {})}>
+                <Text style={styles.menuItem}>Start Planks</Text>
+              </TouchableOpacity>
+            )}
+          {currentRoute !== "DataScreen" &&
+            currentRoute !== "PlankNoAccountScreen" && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("DataScreen", {})}>
+                <Text style={styles.menuItem}>Rank your Planks</Text>
+              </TouchableOpacity>
+            )}
+          {currentRoute !== "LogoutScreen" &&
+            currentRoute !== "PlankNoAccountScreen" && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("LogoutScreen", {})}>
+                <Text style={styles.menuItem}>Logout Screen</Text>
+              </TouchableOpacity>
+            )}
+          {currentRoute !== "EndingCreditsScreen" && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EndingCreditsScreen", {})}>
+              <Text style={styles.menuItem}>Ending Credits Screen</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>

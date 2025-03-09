@@ -132,14 +132,14 @@ export default function LoginScreen() {
           secureTextEntry
         />
 
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
+        <View style={styles.buttonColumn}>
+          {/* <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.navigate("DefaultScreen")}>
-            <Text style={styles.backButtonText} onPress={handleLogin}>
+            onPress={() => navigation.navigate("WelcomeScreen")}>
+            <Text style={styles.backButtonText}>
               Return to Welcome Screen ◀
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             style={styles.loginButton}
@@ -151,6 +151,12 @@ export default function LoginScreen() {
               }
             }}>
             <Text style={styles.loginButtonText}>Login ▶</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.accountLink}
+            onPress={() => navigation.navigate("CreateAccountScreen")}>
+            <Text style={styles.accountLinkText}>Create Account ▶</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -185,8 +191,8 @@ const styles = StyleSheet.create({
     color: "#606060",
     marginBottom: 10,
   },
-  buttonRow: {
-    flexDirection: "row",
+  buttonColumn: {
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -210,7 +216,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  backButton: {
+  accountButton: {
     backgroundColor: "#D3D3D3",
     borderRadius: 25,
     paddingVertical: 15,
@@ -220,10 +226,10 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: "center",
   },
-  backButtonText: {
-    color: "black",
+  accountButtonText: {
+    color: "#bc4598",
     fontSize: 12,
     textAlign: "center",
-    // fontWeight: "bold",
+    fontWeight: "bold",
   },
 });

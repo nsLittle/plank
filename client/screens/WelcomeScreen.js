@@ -25,26 +25,26 @@ export default function WelcomeScreen() {
           The proven core formation method
         </Text>
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text
             style={styles.link}
             onPress={() => navigation.navigate("PlankTypeScreen")}>
             Discover
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View style={styles.buttonRow}>
           <TouchableOpacity
             style={styles.noAccountButton}
-            onPress={() => navigation.navigate("PlankScreen")}>
+            onPress={() => navigation.navigate("PlankNoAccountScreen")}>
             <Text style={styles.noAccountButtonText}>No Account Option ▶</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.noAccountButton}
             onPress={() => navigation.navigate("CreateAccountScreen")}>
             <Text style={styles.noAccountButtonText}>Create Account ▶</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             style={styles.loginButton}
@@ -52,14 +52,14 @@ export default function WelcomeScreen() {
             <Text style={styles.loginButtonText}>Login ▶</Text>
           </TouchableOpacity>
         </View>
-
+        {/* 
         <TouchableOpacity>
           <Text
             style={styles.link}
             onPress={() => navigation.navigate("EndingCreditsScreen")}>
             Ending Credits
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );
