@@ -33,6 +33,9 @@ app.use("/auth", authRoutes);
 const userRoutes = require("./routes/userRoutes");
 app.use("/user", userRoutes);
 
+const lapRoutes = require("./routes/lapRoutes");
+app.use("/laps", lapRoutes);
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   // console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);

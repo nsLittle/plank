@@ -62,11 +62,12 @@ export default function CreateAccountScreen() {
       } else {
         throw new Error("Token is missing from response");
       }
+      if (data) {
+        setDialogMessage("Account created successfully!");
+        setShowDialog(true);
 
-      setDialogMessage("Account created successfully!");
-      setShowDialog(true);
-
-      navigation.navigate("PlankScreen");
+        navigation.navigate("PlankScreen");
+      }
     } catch (error) {
       console.log("Error: ", error);
       setDialogMessage("Signup Failed");

@@ -27,9 +27,7 @@ export default function Header() {
             const { x, y, width, height } = event.nativeEvent.layout;
             setMenuPosition({ left: x, top: y });
           }}
-          onPress={toggleMenu}
-          // onPressOut={closeMenus}
-        >
+          onPress={toggleMenu}>
           <Ionicons name="menu" size={32} style={[styles.menuIcon]}></Ionicons>
         </TouchableOpacity>
         <Text style={styles.headerText}>PlankApp</Text>
@@ -49,6 +47,14 @@ export default function Header() {
           <TouchableOpacity
             onPress={() => navigation.navigate("PlankScreen", {})}>
             <Text style={styles.menuItem}>Start Planks</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("DataScreen", {})}>
+            <Text style={styles.menuItem}>Rank your Planks</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("LogoutScreen", {})}>
+            <Text style={styles.menuItem}>Logout Screen</Text>
           </TouchableOpacity>
         </View>
       )}

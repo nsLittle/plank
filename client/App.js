@@ -20,8 +20,11 @@ import PlankTypeScreen from "./screens/PlankTypeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import PlankScreen from "./screens/PlankScreen";
+import DataScreen from "./screens/DataScreen";
+import LogoutScreen from "./screens/LogoutScreen";
 import DefaultScreen from "./screens/DefaultScreen";
 import EndingCreditsScreen from "./screens/EndingCreditsScreen";
+
 import Header from "./component/Header";
 
 const Stack = createStackNavigator();
@@ -86,6 +89,8 @@ export default function App() {
               component={CreateAccountScreen}
             />
             <Stack.Screen name="PlankScreen" component={PlankScreen} />
+            <Stack.Screen name="DataScreen" component={DataScreen} />
+            <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
             <Stack.Screen
               name="EndingCreditsScreen"
               component={EndingCreditsScreen}

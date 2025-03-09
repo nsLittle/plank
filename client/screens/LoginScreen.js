@@ -1,23 +1,32 @@
 import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
+  Linking,
   Platform,
   ScrollView,
   StyleSheet,
-  View,
   Text,
   TextInput,
   TouchableOpacity,
-  Linking,
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "../context/UserContext";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+
+  const { userContext, setUserContext } = useContext(UserContext) || {};
+
+  useEffect(() => {
+    if (userContext) {
+      console.log("User Context: ", userContext);
+    }
+  }, [userContext]);
 
   const [dialogMessage, setDialogMessage] = useState("");
   const [showDialog, setShowDialog] = useState(false);
@@ -45,13 +54,13 @@ export default function LoginScreen() {
     }
 
     try {
-      console.log("Now I'm really here to handle login...");
+      console.log("Now I'm really ready to handle login...");
       const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email, password: password }),
       });
 
       const data = await response.json();
@@ -63,16 +72,33 @@ export default function LoginScreen() {
 
       console.log("Response:", data);
 
+      const saveToken = async (token) => {
+        if (Platform.OS === "web") {
+          sessionStorage.setItem("authToken", token);
+        } else {
+          try {
+            await SecureStore.setItemAsync("authToken", token);
+          } catch (error) {
+            console.error("Error saving token:", error);
+          }
+        }
+      };
+
       if (data.token) {
-        await SecureStore.setItemAsync("authToken", data.token);
-      } else {
-        throw new Error("Token is missing from response");
+        await saveToken(data.token);
       }
 
-      setDialogMessage("Account created successfully!");
-      setShowDialog(true);
+      if (response) {
+        setDialogMessage("Account created successfully!");
+        setShowDialog(true);
 
-      navigation.navigate("PlankScreen");
+        console.log("userId: ", data.userId, "email: ", data.email);
+        setUserContext({
+          userId: data.userId,
+          email: data.email,
+        });
+        navigation.navigate("PlankScreen");
+      }
     } catch (error) {
       console.log("Error: ", error);
       setDialogMessage("Signup Failed");

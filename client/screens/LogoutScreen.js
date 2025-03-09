@@ -13,35 +13,42 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 
-export default function WelcomeScreen() {
+export default function LoginScreen() {
   const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+      if (Platform.OS === "web") {
+        sessionStorage.removeItem("authToken");
+      } else {
+        await SecureStore.deleteItemAsync("authToken");
+      }
+
+      navigation.navigate("WelcomeScreen");
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Ending Credits</Text>
+        <Text style={styles.bodyTitleText}>Logout</Text>
 
-        <View style={styles.attributionContainer}>
-          <Text style={styles.attributionBold}>Attribution for:</Text>
-          <Text style={styles.attribution}>
-            Favicon:{" "}
-            <a
-              href="https://www.flaticon.com/free-icons/plank"
-              title="plank icons">
-              Plank icons created by monkik - Flaticon
-            </a>
-          </Text>
-        </View>
+        <Text style={styles.bodyIntroText}>
+          Are you sure you don't have time for another plank?
+        </Text>
 
-        {/* <View style={styles.buttonColumn}>
+        <View style={styles.buttonRow}>
           <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              ◀ Return to Welcome Screen
-            </Text>
+            style={styles.logoutButton}
+            onPress={() => {
+              handleLogout;
+              navigation.navigate("WelcomeScreen");
+            }}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
     </ScrollView>
   );
@@ -72,13 +79,8 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     width: 225,
   },
-  attributionBold: {
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-
-  buttonColumn: {
-    flexDirection: "column",
+  buttonRow: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -86,13 +88,29 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 50,
   },
+  nextButton: {
+    backgroundColor: "#bc4598",
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    width: 150,
+    height: 45,
+    justifyContent: "center",
+  },
+  nextButtonText: {
+    color: "white",
+    fontSize: 12,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
   backButton: {
     backgroundColor: "#D3D3D3",
     borderRadius: 25,
     paddingVertical: 15,
     paddingHorizontal: 20,
     alignItems: "center",
-    width: 300,
+    width: 150,
     height: 45,
     justifyContent: "center",
   },

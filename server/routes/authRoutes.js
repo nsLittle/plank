@@ -10,7 +10,7 @@ const { protect } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 // STANDARD
-router.post("/account-creation", accountCreation);
+router.post("/signup", accountCreation);
 router.post("/login", login);
 router.get("/protected-route", protect, (req, res) => {
   res.json({ message: "You are authenticated", user: req.user });

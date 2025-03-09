@@ -29,21 +29,33 @@ exports.accountCreation = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  console.log("At login!");
+  console.log("Raw Request Body:", req.body);
+
+  if (!req.body || typeof req.body !== "object") {
+    return res.status(400).json({ error: "Invalid JSON received" });
+  }
+
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    console.log("User: ", user);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
+
+    console.log("Is Match: ", isMatch);
 
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+
+    console.log("Token: ", token);
 
     res.status(200).json({
       message: "Login successful",

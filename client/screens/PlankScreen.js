@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Alert,
   Linking,
@@ -15,18 +15,28 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { UserContext } from "../context/UserContext";
 
 export default function PlankScreen() {
   const navigation = useNavigation();
+
+  const { userContext, setUserContext } = useContext(UserContext) || {};
+
+  useEffect(() => {
+    if (userContext) {
+      console.log("User Context: ", userContext);
+      console.log("User Id: ", userContext.userId);
+      console.log("User Email: ", userContext.email);
+    }
+  }, [userContext]);
+
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [showDialog, setShowDialog] = useState("");
 
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
   const timerRef = useRef(null);
   const [laps, setLaps] = useState([]);
-
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [showDialog, setShowDialog] = useState("");
 
   let timer;
 
@@ -43,7 +53,16 @@ export default function PlankScreen() {
     }
   };
 
-  const handleSaveLap = () => {
+  const handleSaveLap = (data) => {
+    if (isActive) {
+      setDialogMessage(
+        "Stop the timer first",
+        "You can only save a lap after stopping."
+      );
+      setShowDialog(true);
+      return;
+    }
+
     if (time === 0) {
       setDialogMessage("No time recorded", "Start the timer before saving.");
       setShowDialog(true);
@@ -57,9 +76,43 @@ export default function PlankScreen() {
     setTime(0);
   };
 
-  const handleSaveToAccount = () => {
-    setDialogMessage("Create an account", "Sign up to save your progress.");
-    setShowDialog(true);
+  const handleSaveToAccount = async () => {
+    if (!userContext.userId) {
+      setDialogMessage("Create an account", "Sign up to save your progress.");
+      setShowDialog(true);
+    }
+
+    if (laps.length === 0) {
+      console.error("No lap data to save.");
+      setDialogMessage("No lap data.  Save at least one lap before you save.");
+      setShowDialog(true);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://192.168.1.174:8000/laps/saveLaps", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userContext.email, laps }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Lap data saved:", data);
+      setDialogMessage("Laps successfully saved.");
+      setShowDialog(true);
+      navigation.navigate("DataScreen");
+    } catch (error) {
+      console.error("Failed to save lap data:", error);
+      setDialogMessage("Laps failed to save.");
+      setShowDialog(true);
+      return;
+    }
   };
 
   return (

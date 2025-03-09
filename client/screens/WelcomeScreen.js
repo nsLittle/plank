@@ -28,7 +28,7 @@ export default function WelcomeScreen() {
         <TouchableOpacity>
           <Text
             style={styles.link}
-            onPress={() => navigation.navigate("PlankVisualScreen")}>
+            onPress={() => navigation.navigate("PlankTypeScreen")}>
             Discover
           </Text>
         </TouchableOpacity>
