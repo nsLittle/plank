@@ -1,16 +1,23 @@
 import * as SecureStore from "expo-secure-store";
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContextType, UserContextValue } from "../types/user";
 
-export const UserProvider = ({ children }) => {
-  const [userContext, setUserContext] = useState({
+export const UserContext = createContext<UserContextValue | undefined>(
+  undefined
+);
+
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const [userContext, setUserContext] = useState<UserContextType>({
     userName: null,
     userId: null,
     habitId: null,
     habitinput: null,
     descriptioninput: null,
     teamMemberId: null,
+    teammemberFirstName: null,
+    teammemberProfilePic: null,
     firstName: null,
     lastName: null,
     email: null,
@@ -63,7 +70,7 @@ export const UserProvider = ({ children }) => {
       try {
         if (!userContext.userId) return;
 
-        const userStorageData = [
+        const userStorageData: [string, string][] = [
           ["userId", userContext.userId || ""],
           ["userName", userContext.userName || ""],
           ["habitId", userContext.habitId || ""],
@@ -100,5 +107,3 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
-export const UserContext = createContext();
