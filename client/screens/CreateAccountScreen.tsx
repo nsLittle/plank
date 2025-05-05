@@ -22,14 +22,13 @@ export default function CreateAccountScreen() {
 
   const navigation = useNavigation();
 
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [showDialog, setShowDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState<string>("");
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [showIconDialog, setShowIconDialog] = useState<boolean>(false);
 
-  const [showIconDialog, setShowIconDialog] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleCreateAccount = async () => {
     if (!email || !password || !confirmPassword) {
@@ -112,7 +111,7 @@ export default function CreateAccountScreen() {
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              onPress={() => setShowPictureDialog(false)}
+              onPress={() => setShowIconDialog(false)}
               labelStyle={sharedStyles.dialogButtonConfirm}>
               OK
             </Button>
@@ -131,7 +130,7 @@ export default function CreateAccountScreen() {
           keyboardType="email-address"
           autoCapitalize="none"
         />
-        <View style={sharedStyless.iconInputContainer}>
+        <View style={sharedStyles.iconInputContainer}>
           <TextInput
             style={sharedStyles.input}
             placeholder="Password"

@@ -174,12 +174,18 @@ export const sharedStyles = StyleSheet.create({
     backgroundColor: "white",
   },
   dialogTitle: {
-    color: "red",
+    color: "purple",
     fontWeight: "bold",
+    fontSize: 32,
   },
   dialogButton: {
-    color: "green",
+    color: "black",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 24,
+  },
+  dialogButtonConfirm: {
+    color: "purple",
+    fontWeight: "bold",
+    fontSize: 24,
   },
 });
