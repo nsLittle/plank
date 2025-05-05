@@ -9,12 +9,16 @@ import {
   View,
 } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { UserContext } from "../context/UserContext";
-import { UserContextValue } from "../types/user";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
+import { UserContextValue } from "../types/user";
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
+  type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
+  const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const context = useContext(UserContext);
 
@@ -149,13 +153,7 @@ export default function LoginScreen() {
         <View style={sharedStyles.buttonColumn}>
           <TouchableOpacity
             style={sharedStyles.purpleButton}
-            onPress={async () => {
-              console.log("Login button pressed");
-              const saved = await handleLogin();
-              if (saved) {
-                navigation.navigate("PlankScreen");
-              }
-            }}>
+            onPress={handleLogin}>
             <Text style={sharedStyles.purpleButtonText}>Login ▶</Text>
           </TouchableOpacity>
 

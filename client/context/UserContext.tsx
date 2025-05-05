@@ -40,7 +40,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
           "descriptioninput",
           "teamMemberId",
           "teammemberFirstName",
-          "teammmeberProfliePic",
+          "teammeberProfliePic",
         ]);
 
         const userInfo = Object.fromEntries(storedData);

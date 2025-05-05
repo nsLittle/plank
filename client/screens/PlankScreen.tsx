@@ -206,9 +206,10 @@ export default function PlankScreen() {
           {Array.isArray(lapData) && lapData.length > 0 ? (
             <View style={styles.lapContainer}>
               {lapData.map((lap, index) => (
-                <Text key={lap._id} style={styles.lapText}>
-                  {new Date(lap.entryDate).toLocaleDateString()} | Lap #{" "}
-                  {lap.lap} | {lap.lapType}| {lap.time}
+                <Text key={index} style={styles.lapText}>
+                  {new Date(lap.date).toLocaleDateString()} | {lap.type} |{" "}
+                  {lap.duration || lap.reps || 0}{" "}
+                  {lap.type === "REPS" ? "reps" : "sec"}
                 </Text>
               ))}
             </View>
@@ -245,6 +246,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "white",
     paddingHorizontal: wp("5%"),
+  },
+  lapContainer: {
+    width: "100%",
+    marginTop: 20,
+    paddingHorizontal: 10,
   },
   timer: {
     fontSize: 40,

@@ -1,9 +1,11 @@
 import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
 
 export default function WelcomeScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
     <ScrollView contentContainerStyle={sharedStyles.container}>

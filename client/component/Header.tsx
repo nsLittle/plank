@@ -2,13 +2,17 @@ import { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { StackHeaderProps } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
 
-export default function Header() {
+export default function Header(_props: StackHeaderProps) {
   const navigation = useNavigation();
 
   const [menuVisible, setMenuVisible] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ left: 0, top: 0 });
+  const [menuPosition, setMenuPosition] = useState<{
+    left: number;
+    top: number;
+  }>({ left: 0, top: 0 });
 
   const currentRoute = useNavigationState((state) => {
     const route = state.routes[state.index];

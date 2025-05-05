@@ -2,25 +2,27 @@ import * as SecureStore from "expo-secure-store";
 import { setItemAsync } from "expo-secure-store";
 import { useState } from "react";
 import {
-  Platform,
   ScrollView,
-  StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  Linking,
 } from "react-native";
 import { Button, Dialog, Portal } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
 
 export default function CreateAccountScreen() {
   console.log(SecureStore);
   console.log("SecureStore methods:", Object.keys(SecureStore));
 
-  const navigation = useNavigation();
+  type CreateAccountScreenNavigationProp =
+    StackNavigationProp<RootStackParamList>;
+
+  const navigation = useNavigation<CreateAccountScreenNavigationProp>();
 
   const [dialogMessage, setDialogMessage] = useState<string>("");
   const [showDialog, setShowDialog] = useState<boolean>(false);
@@ -61,7 +63,6 @@ export default function CreateAccountScreen() {
       console.log("Response:", data);
 
       if (data.token) {
-        // await SecureStore.setItemAsync("authToken", data.token);
         await setItemAsync("authToken", data.token);
       } else {
         throw new Error("Token is missing from response");
@@ -94,25 +95,6 @@ export default function CreateAccountScreen() {
             <Button
               onPress={() => setShowDialog(false)}
               labelStyle={sharedStyles.dialogButton}>
-              OK
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-
-        <Dialog
-          visible={showIconDialog}
-          onDismiss={() => setShowIconDialog(false)}
-          style={{ backgroundColor: "white" }}>
-          <Dialog.Title style={sharedStyles.dialogTitle}>
-            Profile Image
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text>Enter an url that points to your profile image.</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={() => setShowIconDialog(false)}
-              labelStyle={sharedStyles.dialogButtonConfirm}>
               OK
             </Button>
           </Dialog.Actions>
@@ -162,12 +144,7 @@ export default function CreateAccountScreen() {
 
           <TouchableOpacity
             style={sharedStyles.purpleButton}
-            onPress={async () => {
-              const saved = await handleCreateAccount();
-              if (saved) {
-                navigation.navigate("PlankScreen");
-              }
-            }}>
+            onPress={handleCreateAccount}>
             <Text style={sharedStyles.purpleButtonText}>Save ▶</Text>
           </TouchableOpacity>
         </View>

@@ -32,16 +32,6 @@ export default function WelcomeScreen() {
             </a>
           </Text>
         </View>
-
-        {/* <View style={styles.buttonColumn}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              ◀ Return to Welcome Screen
-            </Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </ScrollView>
   );
@@ -76,7 +66,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-
+  attributionContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+    alignItems: "center",
+  },
+  attribution: {
+    fontSize: 12,
+    textAlign: "center",
+    color: "#555",
+    lineHeight: 18,
+  },
   buttonColumn: {
     flexDirection: "column",
     justifyContent: "center",

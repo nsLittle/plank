@@ -1,19 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, View, Text } from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
+import { PlankSession } from "../types/plank";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -28,11 +21,9 @@ export default function LoginScreen() {
     }
   }, [userContext]);
 
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [showDialog, setShowDialog] = useState("");
-
-  const [lapData, setLapData] = useState(null);
-  // render date | lap # | time
+  const [dialogMessage, setDialogMessage] = useState<string>("");
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [lapData, setLapData] = useState<PlankSession[] | null>(null);
 
   const handleFetchLaps = async () => {
     console.log("I'm here to fetch lap data...");
@@ -78,19 +69,16 @@ export default function LoginScreen() {
         {Array.isArray(lapData) && lapData.length > 0 ? (
           <View style={styles.lapContainer}>
             {lapData.map((lap, index) => (
-              <Text key={lap._id} style={styles.lapText}>
-                {new Date(lap.entryDate).toLocaleDateString()} | Lap #{lap.lap}{" "}
-                | {lap.time}
+              <Text key={index} style={styles.lapText}>
+                {new Date(lap.date).toLocaleDateString()} | {lap.type} |{" "}
+                {lap.duration || lap.reps || 0}{" "}
+                {lap.type === "REPS" ? "reps" : "sec"}
               </Text>
             ))}
           </View>
         ) : (
           <Text>No lap data available.</Text>
         )}
-        {/* 
-        {showDialog && (
-          <Text style={styles.dialogMessage}>{dialogMessage}</Text>
-        )} */}
       </View>
     </ScrollView>
   );
@@ -120,5 +108,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingBottom: 15,
     width: 225,
+  },
+  lapContainer: {
+    width: "100%",
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  lapText: {
+    fontSize: 16,
+    paddingVertical: 5,
+    textAlign: "center",
   },
 });

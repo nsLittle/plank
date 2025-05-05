@@ -1,20 +1,11 @@
 import * as SplashScreen from "expo-splash-screen";
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Image, StyleSheet, View, Text } from "react-native";
+import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserProvider } from "./context/UserContext";
-import { PaperProvider } from "react-native-paper";
+import Header from "./component/Header";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import PlankTypeScreen from "./screens/PlankTypeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -23,12 +14,10 @@ import PlankScreen from "./screens/PlankScreen";
 import PlankNoAccountScreen from "./screens/PlankNoAccountScreen";
 import DataScreen from "./screens/DataScreen";
 import LogoutScreen from "./screens/LogoutScreen";
-import DefaultScreen from "./screens/DefaultScreen";
 import EndingCreditsScreen from "./screens/EndingCreditsScreen";
+import { RootStackParamList } from "./types/navigation";
 
-import Header from "./component/Header";
-
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
@@ -100,7 +89,6 @@ export default function App() {
               name="EndingCreditsScreen"
               component={EndingCreditsScreen}
             />
-            <Stack.Screen name="DefaultScreen" component={DefaultScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>

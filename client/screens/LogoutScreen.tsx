@@ -1,3 +1,4 @@
+import * as SecureStore from "expo-secure-store";
 import {
   Platform,
   ScrollView,
@@ -6,10 +7,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleLogout = async () => {
     try {
