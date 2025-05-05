@@ -13,18 +13,20 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
 
 export default function PlankNoAccountScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [showDialog, setShowDialog] = useState("");
+  const [dialogMessage, setDialogMessage] = useState<string>("");
+  const [showDialog, setShowDialog] = useState<boolean>(false);
 
-  const [isActive, setIsActive] = useState(false);
-  const [time, setTime] = useState(0);
-  const timerRef = useRef(null);
-  const [laps, setLaps] = useState([]);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(0);
+  const timerRef = useRef<NodeJS.Timer | null>(null);
+  const [laps, setLaps] = useState<number[]>([]);
 
   let timer;
 
@@ -44,21 +46,20 @@ export default function PlankNoAccountScreen() {
   const handleSaveLap = (data) => {
     if (isActive) {
       setDialogMessage(
-        "Stop the timer first",
-        "You can only save a lap after stopping."
+        "Stop the timer first. You can only save a lap after stopping."
       );
       setShowDialog(true);
       return;
     }
 
     if (time === 0) {
-      setDialogMessage("No time recorded", "Start the timer before saving.");
+      setDialogMessage("No time recorded. Start the timer before saving.");
       setShowDialog(true);
       return;
     }
 
     setLaps([...laps, time]);
-    setDialogMessage`Your plank time has been logged.`;
+    setDialogMessage(`Your plank time has been logged.`);
     setShowDialog(true);
 
     setTime(0);

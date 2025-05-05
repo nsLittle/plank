@@ -1,11 +1,36 @@
-import { StyleSheet } from "react-native";
-import { Platform } from "react-native";
+import { StyleSheet, Platform, TextStyle, ViewStyle } from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
-export const sharedStyles = StyleSheet.create({
+type Styles = {
+  container: ViewStyle;
+  body: ViewStyle;
+  bodyTitleText: TextStyle;
+  bodyIntroText: TextStyle;
+  headerContainer: ViewStyle;
+  header: ViewStyle;
+  headerTitle: TextStyle;
+  input: ViewStyle & TextStyle;
+  iconInputContainer: ViewStyle;
+  menuIcon: TextStyle;
+  menuList: ViewStyle;
+  menuItem: TextStyle;
+  iconButton: ViewStyle;
+  buttonRow: ViewStyle;
+  buttonColumn: ViewStyle;
+  greyButtonText: TextStyle;
+  purpleButtonText: TextStyle;
+  greyButton: ViewStyle;
+  purpleButton: ViewStyle;
+  dialog: ViewStyle;
+  dialogTitle: TextStyle;
+  dialogButton: TextStyle;
+  dialogButtonConfirm: TextStyle;
+};
+
+export const sharedStyles = StyleSheet.create<Styles>({
   // MAIN BODY
   container: {
     flexGrow: 1,
