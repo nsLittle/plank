@@ -1,6 +1,6 @@
 # Plank App - Habit Formation Series
 
-## 🚀 Overview
+## Overview
 
 The **Plank App** is part of a **habit formation series**, designed to help users build core strength and track their progress over time. It is a **standalone** application with potential future integration into a larger habit formation series, meaning it can function on its own or potentially integrate into a larger system of habit-building apps.
 
@@ -8,7 +8,7 @@ This app provides a **simple and effective** way to time plank exercises, visual
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend**: React Native (Expo) for mobile, Next.js for web
 - **Backend**: Node.js, Express, MongoDB
@@ -20,7 +20,7 @@ This app provides a **simple and effective** way to time plank exercises, visual
 
 ---
 
-## 📌 Features
+## Features
 
 - **Plank Timer**: Track and time plank holds with an intuitive UI
 - **Progress Tracking**: View history through a **bar or line graph**
@@ -39,7 +39,7 @@ This app provides a **simple and effective** way to time plank exercises, visual
 │── package.json # Project dependencies  
 │── README.md # Project documentation
 
-## 🛠 How to Run Locally
+## How to Run Locally
 
 1. Type: git clone https://github.com/yourusername/plank-app.git
 2. Go to: /plank-app/server
@@ -51,10 +51,11 @@ This app provides a **simple and effective** way to time plank exercises, visual
 
 ---
 
-## 📢 Contact Me
+## Contact Me
 
 🔗 [GitHub](https://github.com/nsLittle)  
 🔗 [LinkedIn](https://www.linkedin.com/in/mutsumihata)
+🔗 [Portfolio](https://www.mutsumi.io)
 
 Feel free to reach out for collaboration, job opportunities, or questions about my work!
 

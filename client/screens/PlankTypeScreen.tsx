@@ -1,47 +1,33 @@
 import {
+  Image,
   Platform,
   ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
-  Linking,
+  View,
 } from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
-export default function WelcomeScreen() {
-  const navigation = useNavigation();
+export default function PlankTypeScreen() {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Ending Credits</Text>
+        <Text style={styles.bodyTitleText}>Pretty</Text>
 
-        <View style={styles.attributionContainer}>
-          <Text style={styles.attributionBold}>Attribution for:</Text>
-          <Text style={styles.attribution}>
-            Favicon:{" "}
-            <a
-              href="https://www.flaticon.com/free-icons/plank"
-              title="plank icons">
-              Plank icons created by monkik - Flaticon
-            </a>
-          </Text>
-        </View>
-
-        {/* <View style={styles.buttonColumn}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              ◀ Return to Welcome Screen
-            </Text>
-          </TouchableOpacity>
-        </View> */}
+        <Image
+          source={require("../assets/images/plank.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
     </ScrollView>
   );
@@ -66,17 +52,9 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     fontWeight: "bold",
   },
-  bodyIntroText: {
-    textAlign: "center",
-    fontSize: 14,
-    paddingBottom: 15,
-    width: 225,
+  image: {
+    height: 500,
   },
-  attributionBold: {
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-
   buttonColumn: {
     flexDirection: "column",
     justifyContent: "center",

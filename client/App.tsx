@@ -1,20 +1,11 @@
 import * as SplashScreen from "expo-splash-screen";
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Image, StyleSheet, View, Text } from "react-native";
+import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserProvider } from "./context/UserContext";
-import { PaperProvider } from "react-native-paper";
+import Header from "./component/Header";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import PlankTypeScreen from "./screens/PlankTypeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -23,12 +14,10 @@ import PlankScreen from "./screens/PlankScreen";
 import PlankNoAccountScreen from "./screens/PlankNoAccountScreen";
 import DataScreen from "./screens/DataScreen";
 import LogoutScreen from "./screens/LogoutScreen";
-import DefaultScreen from "./screens/DefaultScreen";
 import EndingCreditsScreen from "./screens/EndingCreditsScreen";
+import { RootStackParamList } from "./types/navigation";
 
-import Header from "./component/Header";
-
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
@@ -57,13 +46,13 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#8A5F9E",
           alignItems: "center",
           justifyContent: "center",
         }}
         onLayout={onLayoutRootView}>
         <Text style={styles.tagline}>
-          Build Better Habits, One Step at a Time
+          Build a Stronger Core, One Plank at a Time
         </Text>
         <Image
           source={require("./assets/favicon.png")}
@@ -100,7 +89,6 @@ export default function App() {
               name="EndingCreditsScreen"
               component={EndingCreditsScreen}
             />
-            <Stack.Screen name="DefaultScreen" component={DefaultScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
@@ -109,20 +97,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   logo: {
     width: 200,
     height: 200,
     resizeMode: "contain",
   },
   tagline: {
-    marginTop: 20,
-    fontSize: 16,
-    color: "#0A2540",
+    marginTop: 24,
+    fontSize: 20,
+    color: "#F3F0EC",
   },
 });
