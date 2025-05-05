@@ -8,27 +8,35 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
+import { UserContextValue } from "../types/user";
 import { sharedStyles } from "../styles/sharedStyles";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
 
-  const { userContext, setUserContext } = useContext(UserContext) || {};
+  const context = useContext(UserContext);
 
+  if (!context) {
+    throw new Error(
+      "UserContext not found. Ensure you're wrapped in UserProvider."
+    );
+  }
+
+  const { userContext, setUserContext } = context;
   useEffect(() => {
     if (userContext) {
       console.log("User Context: ", userContext);
     }
   }, [userContext]);
 
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [showDialog, setShowDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState<string>("");
+  const [showDialog, setShowDialog] = useState<boolean>(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleLogin = async () => {
     console.log("I'm here to handle login...");
@@ -67,7 +75,7 @@ export default function LoginScreen() {
 
       console.log("Response:", data);
 
-      const saveToken = async (token) => {
+      const saveToken = async (token: string) => {
         if (Platform.OS === "web") {
           sessionStorage.setItem("authToken", token);
         } else {
@@ -91,6 +99,17 @@ export default function LoginScreen() {
         setUserContext({
           userId: data.userId,
           email: data.email,
+          userName: null,
+          habitId: null,
+          habitinput: null,
+          descriptioninput: null,
+          teamMemberId: null,
+          teammemberFirstName: null,
+          teammemberProfilePic: null,
+          firstName: null,
+          lastName: null,
+          profilePic: null,
+          token: data.token,
         });
         navigation.navigate("PlankScreen");
       }
