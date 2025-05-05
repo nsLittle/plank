@@ -1,21 +1,16 @@
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState, useContext } from "react";
 import {
-  Linking,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
+import { sharedStyles } from "../styles/sharedStyles";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -107,42 +102,34 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Login</Text>
+    <ScrollView contentContainerStyle={sharedStyles.container}>
+      <View style={sharedStyles.body}>
+        <Text style={sharedStyles.bodyTitleText}>Login</Text>
 
         <TextInput
-          style={styles.input}
+          style={sharedStyles.input}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
-          style={styles.input}
+          style={sharedStyles.input}
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
         <TextInput
-          style={styles.input}
+          style={sharedStyles.input}
           placeholder="Confirm Password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
         />
 
-        <View style={styles.buttonColumn}>
-          {/* <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              Return to Welcome Screen ◀
-            </Text>
-          </TouchableOpacity> */}
-
+        <View style={sharedStyles.buttonColumn}>
           <TouchableOpacity
-            style={styles.loginButton}
+            style={sharedStyles.purpleButton}
             onPress={async () => {
               console.log("Login button pressed");
               const saved = await handleLogin();
@@ -150,86 +137,21 @@ export default function LoginScreen() {
                 navigation.navigate("PlankScreen");
               }
             }}>
-            <Text style={styles.loginButtonText}>Login ▶</Text>
+            <Text style={sharedStyles.purpleButtonText}>Login ▶</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.accountLink}
+            style={sharedStyles.greyButton}
             onPress={() => navigation.navigate("CreateAccountScreen")}>
-            <Text style={styles.accountLinkText}>Create Account ▶</Text>
+            <Text style={sharedStyles.greyButtonText}>Create Account ▶</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={sharedStyles.greyButton}
+            onPress={() => navigation.navigate("WelcomeScreen")}>
+            <Text style={sharedStyles.greyButtonText}>◀ Welcome Screen</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: "white",
-    paddingHorizontal: wp("5%"),
-  },
-  body: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "web" ? hp("20%") : hp("2%"),
-  },
-  bodyTitleText: {
-    fontSize: 26,
-    textAlign: "center",
-    paddingBottom: 30,
-    fontWeight: "bold",
-  },
-  input: {
-    borderColor: "#D3D3D3",
-    borderWidth: 1,
-    width: 400,
-    height: 30,
-    color: "#606060",
-    marginBottom: 10,
-  },
-  buttonColumn: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 20,
-    gap: 15,
-    marginTop: 50,
-  },
-  loginButton: {
-    backgroundColor: "#bc4598",
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: 150,
-    height: 45,
-    justifyContent: "center",
-  },
-  loginButtonText: {
-    color: "white",
-    fontSize: 12,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  accountButton: {
-    backgroundColor: "#D3D3D3",
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: 150,
-    height: 45,
-    justifyContent: "center",
-  },
-  accountButtonText: {
-    color: "#bc4598",
-    fontSize: 12,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-});

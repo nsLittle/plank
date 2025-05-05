@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
-  Alert,
-  Linking,
   Platform,
   ScrollView,
   StyleSheet,
@@ -15,6 +13,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
+import { sharedStyles } from "../styles/sharedStyles";
 
 export default function PlankNoAccountScreen() {
   const navigation = useNavigation();
@@ -59,102 +58,73 @@ export default function PlankNoAccountScreen() {
     }
 
     setLaps([...laps, time]);
-    setDialogMessage("Lap Logged", `Plank time: ${time} seconds`);
+    setDialogMessage`Your plank time has been logged.`;
     setShowDialog(true);
 
     setTime(0);
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={sharedStyles.container}>
       <Portal>
         <Dialog
           visible={showDialog}
           onDismiss={() => setShowDialog(false)}
-          style={styles.dialog}>
-          <Dialog.Title style={styles.dialogTitle}>Alert</Dialog.Title>
+          style={sharedStyles.dialog}>
+          <Dialog.Title style={sharedStyles.dialogTitle}>
+            Lap Logged
+          </Dialog.Title>
           <Dialog.Content>
             <Text>{dialogMessage}</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button
               onPress={() => setShowDialog(false)}
-              labelStyle={styles.dialogButton}>
+              labelStyle={sharedStyles.dialogButton}>
               OK
             </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
 
-      <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Let's Plank</Text>
+      <View style={sharedStyles.body}>
+        <Text style={sharedStyles.bodyTitleText}>Plank Timer</Text>
 
-        <View style={styles.timerContainer}></View>
-        <Text style={styles.title}>Plank Timer</Text>
-        <Text style={styles.timer}>{time} sec</Text>
+        <View style={styles.timerContainer}>
+          <Text style={styles.timer}>{time} sec</Text>
+        </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleStartStop}>
-          <Text style={styles.buttonText}>{isActive ? "Stop" : "Start"}</Text>
-        </TouchableOpacity>
+        <View style={sharedStyles.buttonColumn}>
+          <TouchableOpacity
+            style={sharedStyles.purpleButton}
+            onPress={handleStartStop}>
+            <Text style={sharedStyles.purpleButtonText}>
+              {isActive ? "Stop" : "Start"}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonSaveLap} onPress={handleSaveLap}>
-          <Text style={styles.buttonText}>Log Lap</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={sharedStyles.greyButton}
+            onPress={handleSaveLap}>
+            <Text style={styles.greyButtonText}>Log Lap</Text>
+          </TouchableOpacity>
+        </View>
 
-        <Text style={styles.lapsTitle}>Today's Laps</Text>
+        {laps.length > 0 && <Text style={styles.lapsTitle}>Today's Laps</Text>}
+
         {laps.map((lap, index) => (
           <Text key={index} style={styles.lapText}>
             Lap {index + 1}: {lap} seconds
           </Text>
         ))}
-        {/* 
-        <TouchableOpacity
-          style={styles.disabledButton}
-          onPress={() => navigation.navigate("PlankNoAccountScreen")}>
-          <Text style={styles.buttonText}>Save to Account</Text>
-        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  dialog: {
-    backgroundColor: "white",
-  },
-  dialogTitle: {
-    color: "red",
-    fontWeight: "bold",
-  },
-  dialogButton: {
-    color: "green",
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  container: {
-    flexGrow: 1,
-    backgroundColor: "white",
-    paddingHorizontal: wp("5%"),
-  },
-  body: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "web" ? hp("20%") : hp("2%"),
-  },
-  bodyTitleText: {
-    fontSize: 26,
-    textAlign: "center",
-    paddingBottom: 30,
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
   timer: {
-    fontSize: 40,
+    fontSize: 52,
     marginVertical: 20,
   },
   button: {
@@ -166,13 +136,6 @@ const styles = StyleSheet.create({
   },
   buttonSaveLap: {
     backgroundColor: "#808080",
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 10,
-    width: 200,
-  },
-  disabledButton: {
-    backgroundColor: "#7a5581",
     padding: 15,
     borderRadius: 10,
     marginTop: 10,

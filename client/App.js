@@ -57,13 +57,13 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "#8A5F9E",
           alignItems: "center",
           justifyContent: "center",
         }}
         onLayout={onLayoutRootView}>
         <Text style={styles.tagline}>
-          Build Better Habits, One Step at a Time
+          Build a Stronger Core, One Plank at a Time
         </Text>
         <Image
           source={require("./assets/favicon.png")}
@@ -109,20 +109,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   logo: {
     width: 200,
     height: 200,
     resizeMode: "contain",
   },
   tagline: {
-    marginTop: 20,
-    fontSize: 16,
-    color: "#0A2540",
+    marginTop: 24,
+    fontSize: 20,
+    color: "#F3F0EC",
   },
 });

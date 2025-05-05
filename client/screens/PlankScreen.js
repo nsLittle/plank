@@ -16,6 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
+import { sharedStyles } from "../styles/sharedStyles";
 
 export default function PlankScreen() {
   const navigation = useNavigation();
@@ -143,9 +144,6 @@ export default function PlankScreen() {
 
       setLapData(Array.isArray(data.getLaps) ? data.getLaps : []);
       console.log("Reformatted Lap Data: ", lapData);
-
-      // setDialogMessage("Laps successfully retrieved.");
-      // setShowDialog(true);
     } catch (error) {
       console.error("Failed to save lap data:", error);
       setDialogMessage("Laps failed to load.");
@@ -164,68 +162,69 @@ export default function PlankScreen() {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Portal>
-        <Dialog
-          visible={showDialog}
-          onDismiss={() => setShowDialog(false)}
-          style={styles.dialog}>
-          <Dialog.Title style={styles.dialogTitle}>Alert</Dialog.Title>
-          <Dialog.Content>
-            <Text>{dialogMessage}</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={() => setShowDialog(false)}
-              labelStyle={styles.dialogButton}>
-              OK
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
+        <Portal>
+          <Dialog
+            visible={showDialog}
+            onDismiss={() => setShowDialog(false)}
+            style={styles.dialog}>
+            <Dialog.Title style={styles.dialogTitle}>Alert</Dialog.Title>
+            <Dialog.Content>
+              <Text>{dialogMessage}</Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button
+                onPress={() => setShowDialog(false)}
+                labelStyle={styles.dialogButton}>
+                OK
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
-      <View style={styles.body}>
-        <Text style={styles.bodyTitleText}>Let's Plank</Text>
+        <View style={sharedStyles.body}>
+          <Text style={sharedStyles.bodyTitleText}>Let's Plank</Text>
 
-        <View style={styles.timerContainer}></View>
-        {/* <Text style={styles.title}>Plank Timer</Text> */}
-        <Text style={styles.timer}>{time} sec</Text>
+          <View style={styles.timerContainer}></View>
+          <Text style={styles.timer}>{time} sec</Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleStartStop}>
-          <Text style={styles.buttonText}>{isActive ? "Stop" : "Start"}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleStartStop}>
+            <Text style={styles.buttonText}>{isActive ? "Stop" : "Start"}</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.logLapButton} onPress={handleLogLap}>
-          <Text style={styles.buttonText}>Log Lap</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.logLapButton} onPress={handleLogLap}>
+            <Text style={styles.buttonText}>Log Lap</Text>
+          </TouchableOpacity>
 
-        <Text style={styles.lapsTitle}>Today's Laps</Text>
-        {laps.map((lap, index) => (
-          <Text key={index} style={styles.lapText}>
-            Lap {index + 1}: {lap} seconds
-          </Text>
-        ))}
+          <Text style={styles.lapsTitle}>Today's Laps</Text>
+          {laps.map((lap, index) => (
+            <Text key={index} style={styles.lapText}>
+              Lap {index + 1}: {lap} seconds
+            </Text>
+          ))}
 
-        {Array.isArray(lapData) && lapData.length > 0 ? (
-          <View style={styles.lapContainer}>
-            {lapData.map((lap, index) => (
-              <Text key={lap._id} style={styles.lapText}>
-                {new Date(lap.entryDate).toLocaleDateString()} | Lap # {lap.lap}{" "}
-                | {lap.lapType}| {lap.time}
-              </Text>
-            ))}
-          </View>
-        ) : (
-          <Text></Text>
-        )}
+          {Array.isArray(lapData) && lapData.length > 0 ? (
+            <View style={styles.lapContainer}>
+              {lapData.map((lap, index) => (
+                <Text key={lap._id} style={styles.lapText}>
+                  {new Date(lap.entryDate).toLocaleDateString()} | Lap #{" "}
+                  {lap.lap} | {lap.lapType}| {lap.time}
+                </Text>
+              ))}
+            </View>
+          ) : (
+            <Text></Text>
+          )}
 
-        <TouchableOpacity
-          style={styles.disabledButton}
-          onPress={handleSaveToAccount}>
-          <Text style={styles.disabledButtonText}>Save to Account</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.disabledButton}
+            onPress={handleSaveToAccount}>
+            <Text style={styles.disabledButtonText}>Save to Account</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -246,23 +245,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "white",
     paddingHorizontal: wp("5%"),
-  },
-  body: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "web" ? hp("20%") : hp("2%"),
-  },
-  bodyTitleText: {
-    fontSize: 26,
-    textAlign: "center",
-    paddingBottom: 30,
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
   },
   timer: {
     fontSize: 40,

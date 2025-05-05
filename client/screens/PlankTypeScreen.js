@@ -26,16 +26,6 @@ export default function PlankTypeScreen() {
           style={styles.image}
           resizeMode="contain"
         />
-
-        {/* <View style={styles.buttonColumn}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={styles.backButtonText}>
-              ◀ Return to Welcome Screen
-            </Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </ScrollView>
   );
