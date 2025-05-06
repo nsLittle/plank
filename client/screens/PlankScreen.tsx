@@ -163,25 +163,6 @@ export default function PlankScreen() {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 20 }}>
-        <Portal>
-          <Dialog
-            visible={showDialog}
-            onDismiss={() => setShowDialog(false)}
-            style={styles.dialog}>
-            <Dialog.Title style={styles.dialogTitle}>Alert</Dialog.Title>
-            <Dialog.Content>
-              <Text>{dialogMessage}</Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button
-                onPress={() => setShowDialog(false)}
-                labelStyle={styles.dialogButton}>
-                OK
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-
         <View style={sharedStyles.body}>
           <Text style={sharedStyles.bodyTitleText}>Let's Plank</Text>
 
@@ -252,6 +233,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 10,
   },
+  timerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+  },
+
   timer: {
     fontSize: 40,
     marginVertical: 20,

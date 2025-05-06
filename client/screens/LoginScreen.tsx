@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState, useContext } from "react";
 import {
   Platform,
@@ -41,6 +42,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = async () => {
     console.log("I'm here to handle login...");
@@ -135,20 +138,43 @@ export default function LoginScreen() {
           value={email}
           onChangeText={setEmail}
         />
-        <TextInput
-          style={sharedStyles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TextInput
-          style={sharedStyles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+        <View style={sharedStyles.input}>
+          <TextInput
+            style={[sharedStyles.inputText, { paddingVertical: 0 }]}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={sharedStyles.iconButton}>
+            <MaterialIcons
+              name={showPassword ? "visibility" : "visibility-off"}
+              size={20}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={sharedStyles.input}>
+          <TextInput
+            style={[sharedStyles.inputText, { paddingVertical: 0 }]}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={sharedStyles.iconButton}>
+            <MaterialIcons
+              name={showPassword ? "visibility" : "visibility-off"}
+              size={20}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
 
         <View style={sharedStyles.buttonColumn}>
           <TouchableOpacity

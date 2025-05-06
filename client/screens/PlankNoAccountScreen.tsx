@@ -25,10 +25,8 @@ export default function PlankNoAccountScreen() {
 
   const [isActive, setIsActive] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
-  const timerRef = useRef<NodeJS.Timer | null>(null);
+  const timerRef = useRef<number | null>(null);
   const [laps, setLaps] = useState<number[]>([]);
-
-  let timer;
 
   const handleStartStop = () => {
     setIsActive((prev) => !prev);
@@ -36,10 +34,12 @@ export default function PlankNoAccountScreen() {
     if (!isActive) {
       timerRef.current = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }, 1000);
+      }, 1000) as unknown as number;
     } else {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+      if (timerRef.current !== null) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     }
   };
 
@@ -59,8 +59,8 @@ export default function PlankNoAccountScreen() {
     }
 
     setLaps([...laps, time]);
-    setDialogMessage(`Your plank time has been logged.`);
-    setShowDialog(true);
+    // setDialogMessage(`Your plank time has been logged.`);
+    // setShowDialog(true);
 
     setTime(0);
   };
@@ -100,14 +100,14 @@ export default function PlankNoAccountScreen() {
             style={sharedStyles.purpleButton}
             onPress={handleStartStop}>
             <Text style={sharedStyles.purpleButtonText}>
-              {isActive ? "Stop" : "Start"}
+              {isActive ? "Stop/Pause" : "Start"}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={sharedStyles.greyButton}
             onPress={handleSaveLap}>
-            <Text style={styles.greyButtonText}>Log Lap</Text>
+            <Text style={sharedStyles.greyButtonText}>Log Lap</Text>
           </TouchableOpacity>
         </View>
 

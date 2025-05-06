@@ -32,6 +32,8 @@ export default function CreateAccountScreen() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const handleCreateAccount = async () => {
     if (!email || !password || !confirmPassword) {
       setDialogMessage("All fields are required.");
@@ -112,29 +114,44 @@ export default function CreateAccountScreen() {
           keyboardType="email-address"
           autoCapitalize="none"
         />
-        <View style={sharedStyles.iconInputContainer}>
+        <View style={sharedStyles.input}>
           <TextInput
-            style={sharedStyles.input}
+            style={[sharedStyles.inputText, { paddingVertical: 0 }]}
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
+            placeholderTextColor="#606060"
           />
           <TouchableOpacity
-            onPress={() => setShowIconDialog(true)}
+            onPress={() => setShowPassword(!showPassword)}
             style={sharedStyles.iconButton}>
-            <MaterialIcons name="info-outline" size={20} color="gray" />
+            <MaterialIcons
+              name={showPassword ? "visibility" : "visibility-off"}
+              size={20}
+              color="gray"
+            />
           </TouchableOpacity>
         </View>
 
-        <TextInput
-          style={sharedStyles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
-
+        <View style={sharedStyles.input}>
+          <TextInput
+            style={[sharedStyles.inputText, { paddingVertical: 0 }]}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={sharedStyles.iconButton}>
+            <MaterialIcons
+              name={showPassword ? "visibility" : "visibility-off"}
+              size={20}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
         <View style={sharedStyles.buttonRow}>
           <TouchableOpacity
             style={sharedStyles.greyButton}

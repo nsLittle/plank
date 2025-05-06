@@ -13,6 +13,7 @@ type Styles = {
   header: ViewStyle;
   headerTitle: TextStyle;
   input: ViewStyle & TextStyle;
+  inputText: TextStyle;
   iconInputContainer: ViewStyle;
   menuIcon: TextStyle;
   menuList: ViewStyle;
@@ -84,27 +85,41 @@ export const sharedStyles = StyleSheet.create<Styles>({
 
   // INPUTS
   input: {
+    flexDirection: "row", // support optional icon
+    alignItems: "center",
+    justifyContent: "space-between",
     borderColor: "#D3D3D3",
     backgroundColor: "#F0F0F0",
     borderWidth: 1,
     borderRadius: 5,
-    width: "85%",
+    width: "100%",
     height: 40,
     color: "#606060",
     marginBottom: 10,
-    paddingLeft: 10,
+    paddingTop: 5,
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+  inputText: {
+    flex: 1,
+    color: "#606060",
+    fontSize: 16,
+    lineHeight: 40,
+    paddingVertical: 0,
   },
   iconInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderColor: "#D3D3D3",
     backgroundColor: "#F0F0F0",
     borderWidth: 1,
     borderRadius: 5,
     width: "85%",
     height: 40,
-    color: "#606060",
     marginBottom: 10,
     paddingLeft: 10,
-    overflow: "hidden",
+    paddingRight: 10,
   },
 
   // MENUS
@@ -137,7 +152,8 @@ export const sharedStyles = StyleSheet.create<Styles>({
 
   // ICONS
   iconButton: {
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 0,
     height: "100%",
     justifyContent: "center",
     backgroundColor: "transparent",
