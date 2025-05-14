@@ -121,7 +121,7 @@ export default function CreateAccountScreen() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
-            placeholderTextColor="#606060"
+            // placeholderTextColor="#606060"
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -140,7 +140,7 @@ export default function CreateAccountScreen() {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}

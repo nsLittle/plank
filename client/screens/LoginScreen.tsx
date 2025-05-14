@@ -132,19 +132,21 @@ export default function LoginScreen() {
       <View style={sharedStyles.body}>
         <Text style={sharedStyles.bodyTitleText}>Login</Text>
 
-        <TextInput
-          style={sharedStyles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
+        <View style={sharedStyles.input}>
+          <TextInput
+            style={sharedStyles.inputText}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
         <View style={sharedStyles.input}>
           <TextInput
             style={[sharedStyles.inputText, { paddingVertical: 0 }]}
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
@@ -163,7 +165,7 @@ export default function LoginScreen() {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            secureTextEntry
+            secureTextEntry={!showPassword}
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}

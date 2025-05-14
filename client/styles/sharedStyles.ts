@@ -85,19 +85,19 @@ export const sharedStyles = StyleSheet.create<Styles>({
 
   // INPUTS
   input: {
-    flexDirection: "row", // support optional icon
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     borderColor: "#D3D3D3",
     backgroundColor: "#F0F0F0",
     borderWidth: 1,
     borderRadius: 5,
-    width: "100%",
+    width: "85%",
     height: 40,
     color: "#606060",
-    marginBottom: 10,
+    marginBottom: 15,
     paddingTop: 5,
-    paddingLeft: 0,
+    paddingLeft: 5,
     paddingRight: 0,
   },
   inputText: {
