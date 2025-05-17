@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Button, Dialog, Portal } from "react-native-paper";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { UserContext } from "../context/UserContext";
@@ -129,6 +130,27 @@ export default function LoginScreen() {
 
   return (
     <ScrollView contentContainerStyle={sharedStyles.container}>
+      <Portal>
+        <Dialog
+          visible={showDialog}
+          onDismiss={() => setShowDialog(false)}
+          style={sharedStyles.dialog}>
+          <Dialog.Title style={sharedStyles.dialogTitle}>
+            Lap Logged
+          </Dialog.Title>
+          <Dialog.Content>
+            <Text>{dialogMessage}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={() => setShowDialog(false)}
+              labelStyle={sharedStyles.dialogButton}>
+              OK
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       <View style={sharedStyles.body}>
         <Text style={sharedStyles.bodyTitleText}>Login</Text>
 
