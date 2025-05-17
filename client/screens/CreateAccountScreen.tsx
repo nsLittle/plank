@@ -1,7 +1,8 @@
 import * as SecureStore from "expo-secure-store";
-import { setItemAsync } from "expo-secure-store";
+// import { setItemAsync } from "expo-secure-store";
 import { useState } from "react";
 import {
+  Platform,
   ScrollView,
   View,
   Text,
@@ -16,9 +17,6 @@ import { sharedStyles } from "../styles/sharedStyles";
 import { RootStackParamList } from "../types/navigation";
 
 export default function CreateAccountScreen() {
-  console.log(SecureStore);
-  console.log("SecureStore methods:", Object.keys(SecureStore));
-
   type CreateAccountScreenNavigationProp =
     StackNavigationProp<RootStackParamList>;
 
@@ -65,16 +63,19 @@ export default function CreateAccountScreen() {
       console.log("Response:", data);
 
       if (data.token) {
-        await setItemAsync("authToken", data.token);
+        if (Platform.OS !== "web") {
+          await SecureStore.setItemAsync("authToken", data.token);
+        } else {
+          sessionStorage.setItem("authToken", data.token);
+        }
       } else {
         throw new Error("Token is missing from response");
       }
-      if (data) {
-        setDialogMessage("Account created successfully!");
-        setShowDialog(true);
 
-        navigation.navigate("PlankScreen");
-      }
+      setDialogMessage("Account created successfully!");
+      setShowDialog(true);
+
+      navigation.navigate("PlankScreen");
     } catch (error) {
       console.log("Error: ", error);
       setDialogMessage("Signup Failed");
@@ -121,7 +122,6 @@ export default function CreateAccountScreen() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
-            // placeholderTextColor="#606060"
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}

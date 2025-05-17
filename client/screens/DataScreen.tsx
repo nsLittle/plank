@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
 import { PlankSession } from "../types/plank";
 
-export default function LoginScreen() {
+export default function DataScreen() {
   const navigation = useNavigation();
 
   const { userContext, setUserContext } = useContext(UserContext) || {};

@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
 import { sharedStyles } from "../styles/sharedStyles";
 import { PlankSession, PlankType } from "../types/plank";
+import DataScreen from "./DataScreen";
 
 export default function PlankScreen() {
   const navigation = useNavigation();
@@ -27,7 +28,6 @@ export default function PlankScreen() {
   useEffect(() => {
     if (userContext) {
       console.log("User Context: ", userContext);
-      console.log("User Id: ", userContext.userId);
       console.log("User Email: ", userContext.email);
     }
   }, [userContext]);
@@ -39,7 +39,7 @@ export default function PlankScreen() {
   const [time, setTime] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [laps, setLaps] = useState<number[]>([]);
-  const [lapData, setLapData] = useState<PlankSession[] | null>(null);
+  const [lapData, setLapData] = useState<PlankSession[]>([]);
 
   let timer;
 
@@ -79,7 +79,7 @@ export default function PlankScreen() {
   };
 
   const handleSaveToAccount = async () => {
-    if (!userContext.userId) {
+    if (!userContext.email) {
       setDialogMessage("Create an account. Sign up to save your progress.");
       setShowDialog(true);
     }

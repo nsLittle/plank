@@ -100,23 +100,12 @@ export default function LoginScreen() {
       }
 
       if (response) {
-        setDialogMessage("Account created successfully!");
-        setShowDialog(true);
+        // setDialogMessage("Account created successfully!");
+        // setShowDialog(true);
 
-        console.log("userId: ", data.userId, "email: ", data.email);
+        // console.log("userId: ", data.userId, "email: ", data.email);
         setUserContext({
-          userId: data.userId,
           email: data.email,
-          userName: null,
-          habitId: null,
-          habitinput: null,
-          descriptioninput: null,
-          teamMemberId: null,
-          teammemberFirstName: null,
-          teammemberProfilePic: null,
-          firstName: null,
-          lastName: null,
-          profilePic: null,
           token: data.token,
         });
         navigation.navigate("PlankScreen");
@@ -135,9 +124,7 @@ export default function LoginScreen() {
           visible={showDialog}
           onDismiss={() => setShowDialog(false)}
           style={sharedStyles.dialog}>
-          <Dialog.Title style={sharedStyles.dialogTitle}>
-            Lap Logged
-          </Dialog.Title>
+          <Dialog.Title style={sharedStyles.dialogTitle}>Alert</Dialog.Title>
           <Dialog.Content>
             <Text>{dialogMessage}</Text>
           </Dialog.Content>
