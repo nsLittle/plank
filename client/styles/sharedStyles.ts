@@ -198,6 +198,7 @@ export const sharedStyles = StyleSheet.create<Styles>({
     width: 200,
     height: 45,
     justifyContent: "center",
+    marginBottom: 15,
   },
   purpleButton: {
     backgroundColor: "#8A5F9E",
@@ -208,6 +209,7 @@ export const sharedStyles = StyleSheet.create<Styles>({
     width: 200,
     height: 45,
     justifyContent: "center",
+    marginBottom: 15,
   },
 
   // DIALOGS
