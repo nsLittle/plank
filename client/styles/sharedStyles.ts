@@ -27,6 +27,7 @@ type Styles = {
   purpleButton: ViewStyle;
   dialog: ViewStyle;
   dialogTitle: TextStyle;
+  dialogText: TextStyle;
   dialogButton: TextStyle;
   dialogButtonConfirm: TextStyle;
 };
@@ -43,10 +44,10 @@ export const sharedStyles = StyleSheet.create<Styles>({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    paddingTop: Platform.OS === "web" ? hp("20%") : hp("2%"),
+    paddingTop: Platform.OS === "web" ? hp("5%") : hp("1%"),
   },
   bodyTitleText: {
-    fontSize: 28,
+    fontSize: 42,
     textAlign: "center",
     paddingBottom: 30,
   },
@@ -222,9 +223,13 @@ export const sharedStyles = StyleSheet.create<Styles>({
     fontSize: 32,
   },
   dialogButton: {
-    color: "black",
+    color: "#ff007f",
     fontWeight: "bold",
     fontSize: 24,
+  },
+  dialogText: {
+    fontSize: 18,
+    paddingTop: 10,
   },
   dialogButtonConfirm: {
     color: "purple",

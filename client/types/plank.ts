@@ -1,14 +1,15 @@
 export enum PlankType {
-  TIME = "TIME",
-  REPS = "REPS",
-  HOLD = "HOLD",
+  BASIC = "Basic",
+  ELBOW = "Elbow",
+  RAISED_LEG_RIGHT = "Raised-Leg-Right",
+  RAISED_LEG_LEFT = "Raised-Leg-Left",
+  ONE_SIDED = "One-Sided",
 }
 
 export interface PlankSession {
   id: string;
+  date: string;
+  lap: number;
   type: PlankType;
   duration?: number;
-  reps?: number;
-  date: string;
-  success: boolean;
 }

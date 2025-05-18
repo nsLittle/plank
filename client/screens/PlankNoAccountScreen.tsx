@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,14 +7,11 @@ import {
   View,
 } from "react-native";
 import { Button, Dialog, Portal } from "react-native-paper";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
 import { RootStackParamList } from "../types/navigation";
+import { PlankType } from "../types/plank";
 
 export default function PlankNoAccountScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -24,12 +20,22 @@ export default function PlankNoAccountScreen() {
   const [showDialog, setShowDialog] = useState<boolean>(false);
 
   const [isActive, setIsActive] = useState<boolean>(false);
+
+  const [plankType, setPlankType] = useState<PlankType | null>(null);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+
   const [time, setTime] = useState<number>(0);
   const timerRef = useRef<number | null>(null);
   const [laps, setLaps] = useState<number[]>([]);
 
   const handleStartStop = () => {
     setIsActive((prev) => !prev);
+
+    if (!plankType) {
+      setDialogMessage("Please select a plank type before starting.");
+      setShowDialog(true);
+      return;
+    }
 
     if (!isActive) {
       timerRef.current = setInterval(() => {
@@ -59,9 +65,6 @@ export default function PlankNoAccountScreen() {
     }
 
     setLaps([...laps, time]);
-    // setDialogMessage(`Your plank time has been logged.`);
-    // setShowDialog(true);
-
     setTime(0);
   };
 
@@ -72,11 +75,9 @@ export default function PlankNoAccountScreen() {
           visible={showDialog}
           onDismiss={() => setShowDialog(false)}
           style={sharedStyles.dialog}>
-          <Dialog.Title style={sharedStyles.dialogTitle}>
-            Lap Logged
-          </Dialog.Title>
+          <Dialog.Title style={sharedStyles.dialogTitle}>ALERT</Dialog.Title>
           <Dialog.Content>
-            <Text>{dialogMessage}</Text>
+            <Text style={sharedStyles.dialogText}>{dialogMessage}</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button
@@ -92,7 +93,34 @@ export default function PlankNoAccountScreen() {
         <Text style={sharedStyles.bodyTitleText}>Plank Timer</Text>
 
         <View style={styles.timerContainer}>
+          <View style={styles.dropDownWrapper}>
+            <TouchableOpacity
+              onPress={() => setShowMenu(!showMenu)}
+              style={styles.dropDownButton}>
+              <Text style={styles.dropDownText}>
+                {plankType ? plankType : "Plank Type"}
+              </Text>
+              <Text style={{ marginLeft: 6 }}>▼</Text>
+            </TouchableOpacity>
+
+            {showMenu && (
+              <View style={styles.dropDownMenu}>
+                {Object.values(PlankType).map((type) => (
+                  <TouchableOpacity
+                    key={type}
+                    onPress={() => {
+                      setPlankType(type);
+                      setShowMenu(false);
+                    }}>
+                    <Text style={styles.dropDownOption}>{type}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+          </View>
+
           <Text style={styles.timer}>{time} sec</Text>
+          <View style={styles.spacer} />
         </View>
 
         <View style={sharedStyles.buttonColumn}>
@@ -124,10 +152,56 @@ export default function PlankNoAccountScreen() {
 }
 
 const styles = StyleSheet.create({
-  timer: {
-    fontSize: 52,
-    marginVertical: 20,
+  timerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingHorizontal: 20,
   },
+  dropDownWrapper: {
+    flex: 1,
+  },
+  dropDownButton: {
+    padding: 10,
+    backgroundColor: "#ddd",
+    borderRadius: 8,
+    alignItems: "center",
+    width: 200,
+  },
+  dropDownText: {
+    fontSize: 16,
+  },
+  dropDownMenu: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    right: 0,
+    width: "85%",
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    zIndex: 10,
+  },
+  dropDownOption: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+  },
+  timer: {
+    fontSize: 82,
+    alignContent: "center",
+    color: "darkgray",
+  },
+  spacer: { flex: 1 },
   button: {
     backgroundColor: "#bc4598",
     padding: 15,
