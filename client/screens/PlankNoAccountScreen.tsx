@@ -12,6 +12,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
 import { RootStackParamList } from "../types/navigation";
 import { PlankType } from "../types/plank";
+import { PlankSessions } from "../models/PlankSessions";
 
 export default function PlankNoAccountScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -25,8 +26,10 @@ export default function PlankNoAccountScreen() {
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const [time, setTime] = useState<number>(0);
-  const timerRef = useRef<number | null>(null);
   const [laps, setLaps] = useState<number[]>([]);
+
+  const timerRef = useRef<number | null>(null);
+  const sessionRef = useRef<PlankSessions>(new PlankSessions());
 
   const handleStartStop = () => {
     setIsActive((prev) => !prev);
@@ -39,7 +42,8 @@ export default function PlankNoAccountScreen() {
 
     if (!isActive) {
       timerRef.current = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
+        const newTime = sessionRef.current.incrementTime();
+        setTime(newTime);
       }, 1000) as unknown as number;
     } else {
       if (timerRef.current !== null) {
