@@ -100,10 +100,6 @@ export default function LoginScreen() {
       }
 
       if (response) {
-        // setDialogMessage("Account created successfully!");
-        // setShowDialog(true);
-
-        // console.log("userId: ", data.userId, "email: ", data.email);
         setUserContext({
           email: data.email,
           token: data.token,
@@ -168,7 +164,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
 
-        <View style={sharedStyles.input}>
+        {/* <View style={sharedStyles.input}>
           <TextInput
             style={[sharedStyles.inputText, { paddingVertical: 0 }]}
             placeholder="Confirm Password"
@@ -185,9 +181,9 @@ export default function LoginScreen() {
               color="gray"
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
-        <View style={sharedStyles.buttonColumn}>
+        <View style={sharedStyles.buttonRow}>
           <TouchableOpacity
             style={sharedStyles.purpleButton}
             onPress={handleLogin}>
@@ -199,11 +195,11 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate("CreateAccountScreen")}>
             <Text style={sharedStyles.greyButtonText}>Create Account ▶</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={sharedStyles.greyButton}
             onPress={() => navigation.navigate("WelcomeScreen")}>
             <Text style={sharedStyles.greyButtonText}>◀ Welcome Screen</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </ScrollView>

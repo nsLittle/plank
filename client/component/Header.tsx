@@ -4,9 +4,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { sharedStyles } from "../styles/sharedStyles";
+import { RootStackParamList } from "../types/navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type RouteName = keyof RootStackParamList;
 
 export default function Header(_props: StackHeaderProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{
@@ -16,7 +20,7 @@ export default function Header(_props: StackHeaderProps) {
 
   const currentRoute = useNavigationState((state) => {
     const route = state.routes[state.index];
-    return route.name;
+    return route.name as RouteName;
   });
 
   const toggleMenu = () => {
@@ -33,7 +37,7 @@ export default function Header(_props: StackHeaderProps) {
     <View style={sharedStyles.headerContainer}>
       <View style={sharedStyles.header}>
         {currentRoute !== "WelcomeScreen" &&
-          currentRoute !== "LoginScreen" &&
+          // currentRoute !== "LoginScreen" &&
           currentRoute !== "LogoutScreen" && (
             <TouchableOpacity
               onLayout={(event) => {
@@ -59,40 +63,44 @@ export default function Header(_props: StackHeaderProps) {
           ]}>
           {currentRoute !== "WelcomeScreen" && (
             <TouchableOpacity
-              onPress={() => navigation.navigate("WelcomeScreen", {})}>
+              onPress={() => navigation.navigate("WelcomeScreen")}>
               <Text style={sharedStyles.menuItem}>Welcome Screen</Text>
             </TouchableOpacity>
           )}
-          {currentRoute !== "PlankTypeScreen" && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("PlankTypeScreen", {})}>
-              <Text style={sharedStyles.menuItem}>Plank Types</Text>
-            </TouchableOpacity>
-          )}
-          {currentRoute !== "PlankScreen" &&
-            currentRoute !== "PlankNoAccountScreen" && (
+          {currentRoute !== "PlankTypeScreen" &&
+            currentRoute !== "LoginScreen" && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("PlankScreen", {})}>
+                onPress={() => navigation.navigate("PlankTypeScreen")}>
+                <Text style={sharedStyles.menuItem}>Plank Types</Text>
+              </TouchableOpacity>
+            )}
+          {currentRoute !== "PlankScreen" &&
+            currentRoute !== "PlankNoAccountScreen" &&
+            currentRoute !== "LoginScreen" && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("PlankScreen")}>
                 <Text style={sharedStyles.menuItem}>Start Planks</Text>
               </TouchableOpacity>
             )}
           {currentRoute !== "DataScreen" &&
-            currentRoute !== "PlankNoAccountScreen" && (
+            currentRoute !== "PlankNoAccountScreen" &&
+            currentRoute !== "LoginScreen" && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("DataScreen", {})}>
+                onPress={() => navigation.navigate("DataScreen")}>
                 <Text style={sharedStyles.menuItem}>Rank your Planks</Text>
               </TouchableOpacity>
             )}
           {currentRoute !== "LogoutScreen" &&
-            currentRoute !== "PlankNoAccountScreen" && (
+            currentRoute !== "PlankNoAccountScreen" &&
+            currentRoute !== "LoginScreen" && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("LogoutScreen", {})}>
+                onPress={() => navigation.navigate("LogoutScreen")}>
                 <Text style={sharedStyles.menuItem}>Logout Screen</Text>
               </TouchableOpacity>
             )}
           {currentRoute !== "EndingCreditsScreen" && (
             <TouchableOpacity
-              onPress={() => navigation.navigate("EndingCreditsScreen", {})}>
+              onPress={() => navigation.navigate("EndingCreditsScreen")}>
               <Text style={sharedStyles.menuItem}>Ending Credits Screen</Text>
             </TouchableOpacity>
           )}

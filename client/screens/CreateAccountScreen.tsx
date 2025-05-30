@@ -76,9 +76,21 @@ export default function CreateAccountScreen() {
       setShowDialog(true);
 
       navigation.navigate("PlankScreen");
-    } catch (error) {
-      console.log("Error: ", error);
-      setDialogMessage("Signup Failed");
+    } catch (error: unknown) {
+      let errorMessage = "Signup failed. Please try again.";
+
+      if (error instanceof Error) {
+        const raw = error.message;
+        console.log("Raw error:", raw);
+
+        if (raw.includes("E11000") && raw.includes("duplicate key")) {
+          errorMessage = "An account with this email already exists.";
+        } else {
+          errorMessage = `Signup failed: ${raw}`;
+        }
+      }
+
+      setDialogMessage(errorMessage);
       setShowDialog(true);
     }
   };
