@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: plank-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: plank-master
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - plank-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: plank-mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+    networks:
+      - plank-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  plank-network:
+    driver: bridge
