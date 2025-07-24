@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"cd client && npx expo start --port 8082 --non-interactive\"",
-    "server:dev": "cd server && npm run dev",
+    "server:dev": "cd server && nodemon --watch . --ext ts --exec ts-node index.ts",
     "server:start": "cd server && npm start",
     "client:start": "cd client && expo start",
     "client:ios": "cd client && expo start --ios",

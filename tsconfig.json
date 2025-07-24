@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
     "target": "ES2020",
-    "module": "commonjs",
+    "moduleResolution": "Node",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
@@ -13,12 +14,7 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "extends": "expo/tsconfig.base"
 }

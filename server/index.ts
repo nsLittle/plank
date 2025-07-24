@@ -1,7 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
+const express = require("express");
+
+const cors = require("cors");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 
@@ -14,21 +16,23 @@ app.use(
   })
 );
 
+console.log("🌱 Bare minimum backend index file loaded");
+
 mongoose
-  .connect(process.env.MONGODB_URI!)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("✅ Connected to MongoDB");
   })
-  .catch((error) => {
+  .catch((error: Error) => {
     console.error("❌ MongoDB connection error:", error);
     process.exit(1);
   });
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req: any, res: any) => {
   res.send("Server is running!");
 });
 
-app.use((req, res, next) => {
+app.use((req: any, res: any, next: any) => {
   console.log(`Incoming Request: ${req.method} ${req.url}`);
   next();
 });
@@ -38,8 +42,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 
-// const authRoutes = require("./routes/authRoutes");
-// app.use("/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 // const lapRoutes = require("./routes/lapRoutes");
 // app.use("/laps", lapRoutes);
