@@ -149,7 +149,7 @@ export default function LoginScreen() {
         </View>
         <View style={sharedStyles.input}>
           <TextInput
-            style={[sharedStyles.inputText, { paddingVertical: 0 }]}
+            style={[sharedStyles.inputText]}
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
@@ -197,11 +197,6 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate("CreateAccountScreen")}>
             <Text style={sharedStyles.greyButtonText}>Create Account ▶</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            style={sharedStyles.greyButton}
-            onPress={() => navigation.navigate("WelcomeScreen")}>
-            <Text style={sharedStyles.greyButtonText}>◀ Welcome Screen</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </ScrollView>
