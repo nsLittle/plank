@@ -18,9 +18,9 @@ export default function WelcomeScreen() {
           The proven core formation method
         </Text>
 
-        <View style={sharedStyles.buttonRow}>
+        <View style={sharedStyles.buttonColumn}>
           <TouchableOpacity
-            style={sharedStyles.purpleButton}
+            style={sharedStyles.purpleButtonFullMobile}
             onPress={() => navigation.navigate("LoginScreen")}>
             <Text style={sharedStyles.purpleButtonText}>Login ▶</Text>
           </TouchableOpacity>

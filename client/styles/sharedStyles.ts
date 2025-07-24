@@ -1,4 +1,10 @@
-import { StyleSheet, Platform, TextStyle, ViewStyle } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Platform,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -25,12 +31,18 @@ type Styles = {
   purpleButtonText: TextStyle;
   greyButton: ViewStyle;
   purpleButton: ViewStyle;
+  purpleButtonFullMobile: ViewStyle;
   dialog: ViewStyle;
   dialogTitle: TextStyle;
   dialogText: TextStyle;
   dialogButton: TextStyle;
   dialogButtonConfirm: TextStyle;
 };
+
+const screenWidth = Dimensions.get("window").width;
+const isMobile = screenWidth < 400;
+
+console.log("📱 screenWidth:", screenWidth);
 
 export const sharedStyles = StyleSheet.create<Styles>({
   // MAIN BODY
@@ -103,6 +115,7 @@ export const sharedStyles = StyleSheet.create<Styles>({
   },
   inputText: {
     height: 48,
+    width: "100%",
     paddingVertical: 0,
     paddingTop: 14,
     paddingBottom: 14,
@@ -181,10 +194,10 @@ export const sharedStyles = StyleSheet.create<Styles>({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    paddingHorizontal: 20,
     gap: 15,
     marginTop: 50,
     marginBottom: 50,
+    paddingHorizontal: 20,
   },
   greyButtonText: {
     color: "black",
@@ -201,18 +214,33 @@ export const sharedStyles = StyleSheet.create<Styles>({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    width: 200,
     height: 45,
     marginBottom: 15,
+    alignSelf: "center",
+    width: isMobile ? wp("100%") - 40 : 160,
+    marginHorizontal: 5,
   },
   purpleButton: {
     backgroundColor: "#8A5F9E",
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    width: 200,
     height: 45,
     marginBottom: 15,
+    alignSelf: "center",
+    width: isMobile ? wp("100%") - 40 : 160,
+    marginHorizontal: 5,
+  },
+  purpleButtonFullMobile: {
+    backgroundColor: "#8A5F9E",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    width: isMobile ? wp("100%") : undefined,
+    minWidth: isMobile ? undefined : 250,
+    height: 45,
+    marginBottom: 15,
+    alignSelf: "center",
   },
 
   // DIALOGS

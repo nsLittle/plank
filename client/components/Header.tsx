@@ -72,6 +72,7 @@ export default function Header(_props: StackHeaderProps) {
             )}
           {currentRoute !== "PlankTypeScreen" &&
             currentRoute !== "LoginScreen" &&
+            currentRoute !== "CreateAccountScreen" &&
             currentRoute !== "EndingCreditsScreen" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("PlankTypeScreen")}>
@@ -80,6 +81,7 @@ export default function Header(_props: StackHeaderProps) {
             )}
           {currentRoute !== "PlankScreen" &&
             currentRoute !== "LoginScreen" &&
+            currentRoute !== "CreateAccountScreen" &&
             currentRoute !== "EndingCreditsScreen" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("PlankScreen")}>
@@ -88,6 +90,7 @@ export default function Header(_props: StackHeaderProps) {
             )}
           {currentRoute !== "ProgressScreen" &&
             currentRoute !== "LoginScreen" &&
+            currentRoute !== "CreateAccountScreen" &&
             currentRoute !== "EndingCreditsScreen" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("ProgressScreen")}>
@@ -96,6 +99,7 @@ export default function Header(_props: StackHeaderProps) {
             )}
           {currentRoute !== "LogoutScreen" &&
             currentRoute !== "LoginScreen" &&
+            currentRoute !== "CreateAccountScreen" &&
             currentRoute !== "EndingCreditsScreen" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("LogoutScreen")}>
@@ -108,7 +112,7 @@ export default function Header(_props: StackHeaderProps) {
             currentRoute !== "EndingCreditsScreen" && (
               <TouchableOpacity
                 onPress={() => navigation.navigate("EndingCreditsScreen")}>
-                <Text style={sharedStyles.menuItem}>Ending Credits Screen</Text>
+                <Text style={sharedStyles.menuItem}>Ending Credits</Text>
               </TouchableOpacity>
             )}
         </View>

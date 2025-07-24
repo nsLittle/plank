@@ -8,6 +8,7 @@ import { UserProvider } from "./context/UserContext";
 import Header from "./components/Header";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
+import CreateAccountScreen from "./screens/CreateAccountScreen";
 
 const Stack = createStackNavigator();
 
@@ -51,9 +52,8 @@ export default function App() {
           justifyContent: "center",
         }}
         onLayout={onLayoutRootView}>
-        <Text style={styles.tagline}>
-          Build a Stronger Core, One Plank at a Time
-        </Text>
+        <Text style={styles.tagline}>Build a Stronger Core,</Text>
+        <Text style={styles.tagline}>One Plank at a Time</Text>
         <Image
           source={require("./assets/favicon.png")}
           style={{ width: 200, height: 200 }}
@@ -72,6 +72,10 @@ export default function App() {
             }}>
             <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen
+              name="CreateAccountScreen"
+              component={CreateAccountScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
@@ -86,7 +90,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   tagline: {
-    marginTop: 24,
     fontSize: 20,
     color: "#F3F0EC",
   },
