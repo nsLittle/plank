@@ -10,6 +10,7 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import PlankScreen from "./screens/PlankScreen";
+import ProgressScreen from "./screens/ProgressScreen";
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,7 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // fake delay
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -78,6 +79,7 @@ export default function App() {
               component={CreateAccountScreen}
             />
             <Stack.Screen name="PlankScreen" component={PlankScreen} />
+            <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
