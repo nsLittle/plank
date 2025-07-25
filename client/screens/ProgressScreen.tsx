@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   tabPill: {
     flexDirection: "row",
-    backgroundColor: "#000",
+    backgroundColor: "#D3A4E0",
     borderRadius: 50,
     padding: 4,
     width: "100%",
@@ -237,15 +237,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabActive: {
-    backgroundColor: "white",
+    backgroundColor: "#8A5F9E",
   },
   tabText: {
-    color: "white",
+    color: "#8A5F9E",
     fontSize: 16,
     fontWeight: "500",
   },
   tabTextActive: {
-    color: "purple",
+    color: "white",
     fontWeight: "700",
   },
   scrollContent: {
