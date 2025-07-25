@@ -2,6 +2,7 @@ import * as SplashScreen from "expo-splash-screen";
 import React, { useState, useEffect, useCallback } from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
 import { PaperProvider } from "react-native-paper";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserProvider } from "./context/UserContext";
@@ -13,6 +14,29 @@ import PlankScreen from "./screens/PlankScreen";
 import ProgressScreen from "./screens/ProgressScreen";
 
 const Stack = createStackNavigator();
+
+const toastConfig = {
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: "#FF69B4", marginBottom: 40 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{ fontSize: 16, fontWeight: "600" }}
+      text2Style={{ fontSize: 14 }}
+      position="bottom"
+    />
+  ),
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      style={{ borderLeftColor: "#FF69B4", marginBottom: 40 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{ fontSize: 16, fontWeight: "600" }}
+      text2Style={{ fontSize: 14 }}
+      position="bottom"
+    />
+  ),
+};
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
@@ -82,6 +106,7 @@ export default function App() {
             <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
           </Stack.Navigator>
         </NavigationContainer>
+        <Toast config={toastConfig} position="bottom" />
       </UserProvider>
     </PaperProvider>
   );

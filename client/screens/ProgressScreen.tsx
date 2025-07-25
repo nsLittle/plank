@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProgressScreen() {
   const [progressToday, setProgressToday] = useState(null);
@@ -105,6 +106,11 @@ export default function ProgressScreen() {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching progress:", error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to load progress",
+        text2: "Please check your connection or try again later.",
+      });
     }
   };
 
