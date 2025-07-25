@@ -12,6 +12,8 @@ import LoginScreen from "./screens/LoginScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
 import PlankScreen from "./screens/PlankScreen";
 import ProgressScreen from "./screens/ProgressScreen";
+import LogoutScreen from "./screens/LogoutScreen";
+import EndingCreditsScreen from "./screens/EndingCreditsScreen";
 
 const Stack = createStackNavigator();
 
@@ -104,6 +106,11 @@ export default function App() {
             />
             <Stack.Screen name="PlankScreen" component={PlankScreen} />
             <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
+            <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
+            <Stack.Screen
+              name="EndingCreditsScreen"
+              component={EndingCreditsScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
         <Toast config={toastConfig} position="bottom" />
