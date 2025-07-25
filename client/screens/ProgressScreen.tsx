@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProgressScreen() {
   const [progressToday, setProgressToday] = useState(null);
+  const [todaysSessions, setTodaysSessions] = useState([]);
   const [progressMonth, setProgressMonth] = useState(null);
   const [progressYear, setProgressYear] = useState(null);
   const [progressAll, setProgressAll] = useState(null);
@@ -114,15 +115,56 @@ export default function ProgressScreen() {
     }
   };
 
+  const fetchTodaysSessions = async () => {
+    const base = "192.168.1.174"; // adjust if needed
+    const url = `http://${base}:8000/laps/getTodaysSessions`;
+
+    const storedUser = await AsyncStorage.getItem("user");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    const token = parsedUser?.token;
+
+    if (!token) {
+      console.error("No token found in AsyncStorage");
+      return;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      console.log("Fetched today's sessions:", data);
+      setTodaysSessions(data);
+    } catch (error) {
+      console.error("Error fetching today's sessions:", error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to load sessions",
+        text2: "Check your connection or try again.",
+      });
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     fetchProgress(activeTab);
+
+    if (activeTab === "Today") {
+      fetchTodaysSessions();
+    } else {
+      setTodaysSessions([]);
+    }
   }, [activeTab]);
 
   const summaryProgress = getSummaryProgress();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { flexGrow: 1 }]}>
       {/* Tab Navigation */}
       <View style={styles.tabWrapper}>
         <View style={styles.tabPill}>
@@ -143,70 +185,103 @@ export default function ProgressScreen() {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {loading ? (
-          <Text style={styles.loadingText}>Loading...</Text>
-        ) : summaryProgress ? (
-          <>
-            {/* Progress Summary */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Progress</Text>
-              <View style={styles.statsGrid}>
-                <View style={styles.statCard}>
-                  <Text style={styles.statLabel}>Total Plank Reps Logged</Text>
-                  <Text style={styles.statValue}>
-                    {summaryProgress.totalReps || 0}
-                  </Text>
-                </View>
-                <View style={styles.statCard}>
-                  <Text style={styles.statLabel}>Total Plank Time Logged</Text>
-                  <Text style={styles.statValue}>
-                    {formatTime(summaryProgress.totalTime || 0)}
-                  </Text>
-                </View>
-                <View style={styles.statCard}>
-                  <Text style={styles.statLabel}>Average Plank Rep Time</Text>
-                  <Text style={styles.statValue}>
-                    {formatTime(getAverageTime(summaryProgress))}
-                  </Text>
-                </View>
-                <View style={styles.statCard}>
-                  <Text style={styles.statLabel}>Longest Plank Rep Time</Text>
-                  <Text style={styles.statValue}>
-                    {formatTime(summaryProgress.longestPlank || 0)}
-                  </Text>
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {loading ? (
+            <Text style={styles.loadingText}>Loading...</Text>
+          ) : summaryProgress ? (
+            <>
+              {/* Progress Summary */}
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Progress</Text>
+                <View style={styles.statsGrid}>
+                  <View style={styles.statCard}>
+                    <Text style={styles.statLabel}>
+                      Total Plank Reps Logged
+                    </Text>
+                    <Text style={styles.statValue}>
+                      {summaryProgress.totalReps || 0}
+                    </Text>
+                  </View>
+                  <View style={styles.statCard}>
+                    <Text style={styles.statLabel}>
+                      Total Plank Time Logged
+                    </Text>
+                    <Text style={styles.statValue}>
+                      {formatTime(summaryProgress.totalTime || 0)}
+                    </Text>
+                  </View>
+                  <View style={styles.statCard}>
+                    <Text style={styles.statLabel}>Average Plank Rep Time</Text>
+                    <Text style={styles.statValue}>
+                      {formatTime(getAverageTime(summaryProgress))}
+                    </Text>
+                  </View>
+                  <View style={styles.statCard}>
+                    <Text style={styles.statLabel}>Longest Plank Rep Time</Text>
+                    <Text style={styles.statValue}>
+                      {formatTime(summaryProgress.longestPlank || 0)}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
 
-            {/* Totals by Type */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>
-                {activeTab} Totals by Type
-              </Text>
-              <View style={styles.typeGrid}>
-                {plankTypes.map((type) => {
-                  const stats = summaryProgress?.byType?.[type];
-                  const total = stats?.total || 0;
+              {/* Totals by Type */}
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>
+                  {activeTab} - Totals by Type
+                </Text>
+                <View style={styles.typeGrid}>
+                  {plankTypes.map((type) => {
+                    const stats = summaryProgress?.byType?.[type];
+                    const total = stats?.total || 0;
 
-                  return (
-                    <View key={type} style={styles.typeCard}>
-                      <Text style={styles.statLabel}>
-                        {type.replace(/\b\w/g, (l) => l.toUpperCase())}
-                      </Text>
-                      <Text style={styles.statValue}>{formatTime(total)}</Text>
-                    </View>
-                  );
-                })}
+                    return (
+                      <View key={type} style={styles.typeCard}>
+                        <Text style={styles.statLabel}>
+                          {type.replace(/\b\w/g, (l) => l.toUpperCase())}
+                        </Text>
+                        <Text style={styles.statValue}>
+                          {formatTime(total)}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
               </View>
+            </>
+          ) : (
+            <Text style={styles.noDataText}>
+              No progress found for {activeTab.toLowerCase()}.
+            </Text>
+          )}
+
+          {/* Today's Sessions */}
+          {activeTab === "Today" && todaysSessions.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Session Breakdown</Text>
+              {todaysSessions.map((session, index) => (
+                <View key={index} style={styles.sessionRow}>
+                  <Text style={styles.sessionTime}>
+                    {new Date(session.timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Text>
+                  <View>
+                    <Text style={styles.sessionLabel}>
+                      {session.type.replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </Text>
+                    <Text style={styles.sessionDuration}>
+                      {formatTime(session.duration)}
+                    </Text>
+                  </View>
+                </View>
+              ))}
             </View>
-          </>
-        ) : (
-          <Text style={styles.noDataText}>
-            No progress found for {activeTab.toLowerCase()}.
-          </Text>
-        )}
-      </ScrollView>
+          )}
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -216,6 +291,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingHorizontal: wp("5%"),
+    minHeight: "100%",
   },
   tabWrapper: {
     width: "100%",
@@ -249,7 +325,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   scrollContent: {
-    paddingBottom: 20,
+    flexGrow: 1,
+    paddingTop: 10,
+    paddingBottom: 80,
   },
   section: {
     width: "100%",
@@ -303,5 +381,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 50,
     color: "#666",
+  },
+  sessionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  sessionTime: {
+    fontSize: 14,
+    color: "#999",
+    width: 70,
+  },
+  sessionLabel: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  sessionDuration: {
+    fontSize: 14,
+    color: "#555",
   },
 });

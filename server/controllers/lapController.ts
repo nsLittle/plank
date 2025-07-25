@@ -6,6 +6,18 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
+interface TotalsEntry {
+  plankType: string;
+  totalTime: number;
+  reps: number;
+}
+
+interface LapEntry {
+  time: number;
+  plankType: string;
+  entryDate: Date;
+}
+
 const Lap = require("../models/Lap").default;
 
 function getDateRange(mode: "daily" | "monthly" | "yearly") {
@@ -65,13 +77,10 @@ const aggregateTotalsByType = async (
   ]);
 
   const result: Record<string, { total: number; reps: number }> = {};
-  totals.forEach(
-    (entry: { plankType: string; totalTime: number; reps: number }) => {
-      const { plankType, totalTime, reps } = entry;
-
-      result[plankType] = { total: totalTime, reps };
-    }
-  );
+  totals.forEach((entry: TotalsEntry) => {
+    const { plankType, totalTime, reps } = entry;
+    result[plankType] = { total: totalTime, reps };
+  });
 
   return result;
 };
@@ -166,7 +175,7 @@ const getTodaysProgress = async (req: AuthenticatedRequest, res: Response) => {
     let longestPlank = 0;
     let byType: Record<string, { total: number; reps: number }> = {};
 
-    for (const lap of laps) {
+    for (const lap of laps as LapEntry[]) {
       totalReps += 1;
       totalTime += lap.time;
       if (lap.time > longestPlank) longestPlank = lap.time;
@@ -222,6 +231,33 @@ const getTodaysTotalsByType = async (
   }
 };
 
+// GET /getTodaysSessions
+const getTodaysSessions = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const email = req.user.email;
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const sessions = await Lap.find({
+      email,
+      entryDate: { $gte: startOfDay, $lte: endOfDay },
+    }).sort({ entryDate: 1 });
+
+    const formatted = sessions.map((lap: LapEntry) => ({
+      type: lap.plankType,
+      duration: lap.time,
+      timestamp: lap.entryDate,
+    }));
+
+    res.status(200).json(formatted);
+  } catch (error) {
+    console.error("Error fetching today's sessions:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // GET /getMonthlyProgress
 const getMonthlyProgress = async (req: Request, res: Response) => {
   console.log("At getting monthly progress...");
@@ -239,7 +275,7 @@ const getMonthlyProgress = async (req: Request, res: Response) => {
     let longestPlank = 0;
     let byType: Record<string, { total: number; reps: number }> = {};
 
-    for (const lap of laps) {
+    for (const lap of laps as LapEntry[]) {
       totalReps += 1;
       totalTime += lap.time;
       if (lap.time > longestPlank) longestPlank = lap.time;
@@ -312,7 +348,7 @@ const getYearlyProgress = async (req: AuthenticatedRequest, res: Response) => {
     let longestPlank = 0;
     let byType: Record<string, { total: number; reps: number }> = {};
 
-    for (const lap of laps) {
+    for (const lap of laps as LapEntry[]) {
       totalReps += 1;
       totalTime += lap.time;
       if (lap.time > longestPlank) longestPlank = lap.time;
@@ -380,7 +416,7 @@ const getAllProgress = async (req: AuthenticatedRequest, res: Response) => {
     let longestPlank = 0;
     let byType: Record<string, { total: number; reps: number }> = {};
 
-    for (const lap of laps) {
+    for (const lap of laps as LapEntry[]) {
       totalReps += 1;
       totalTime += lap.time;
       if (lap.time > longestPlank) longestPlank = lap.time;
@@ -431,11 +467,13 @@ const getAllTotalsByType = async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 module.exports = {
   saveLaps,
   getAllLaps,
   getTodaysProgress,
   getTodaysTotalsByType,
+  getTodaysSessions,
   getMonthlyProgress,
   getMonthlyTotalsByType,
   getYearlyProgress,

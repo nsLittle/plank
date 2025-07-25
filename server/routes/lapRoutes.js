@@ -5,6 +5,7 @@ const {
   getAllLaps,
   getTodaysProgress,
   getTodaysTotalsByType,
+  getTodaysSessions,
   getMonthlyProgress,
   getMonthlyTotalsByType,
   getYearlyProgress,
@@ -18,6 +19,7 @@ router.post("/saveLaps", protect, saveLaps);
 router.get("/getAllLaps", protect, getAllLaps);
 router.get("/getTodaysProgress", protect, getTodaysProgress);
 router.get("/getTodaysTotalsByType", protect, getTodaysTotalsByType);
+router.get("/getTodaysSessions", protect, getTodaysSessions);
 router.get("/getMonthlyProgress", protect, getMonthlyProgress);
 router.get("/getMonthlyTotalsByType", protect, getMonthlyTotalsByType);
 router.get("/getYearlyProgress", protect, getYearlyProgress);
