@@ -39,5 +39,8 @@
     "plank"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "expo-secure-store": "~14.2.3"
+  }
 }

@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import CreateAccountScreen from "./screens/CreateAccountScreen";
+import PlankScreen from "./screens/PlankScreen";
 
 const Stack = createStackNavigator();
 
@@ -76,6 +77,7 @@ export default function App() {
               name="CreateAccountScreen"
               component={CreateAccountScreen}
             />
+            <Stack.Screen name="PlankScreen" component={PlankScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
