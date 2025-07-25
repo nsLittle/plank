@@ -1,6 +1,14 @@
-const Lap = require("../models/Lap");
+import { Request, Response } from "express";
 
-function getDateRange(mode) {
+interface AuthenticatedRequest extends Request {
+  user: {
+    email: string;
+  };
+}
+
+const Lap = require("../models/Lap").default;
+
+function getDateRange(mode: "daily" | "monthly" | "yearly") {
   const now = new Date();
   let start, end;
 
@@ -27,8 +35,12 @@ function getDateRange(mode) {
   return { start, end };
 }
 
-const aggregateTotalsByType = async (email, range = null) => {
-  const match = { email };
+const aggregateTotalsByType = async (
+  email: string,
+  range?: { start: Date; end: Date }
+) => {
+  const match: Record<string, any> = { email };
+
   if (range) {
     match.entryDate = { $gte: range.start, $lte: range.end };
   }
@@ -52,22 +64,26 @@ const aggregateTotalsByType = async (email, range = null) => {
     },
   ]);
 
-  const result = {};
-  totals.forEach(({ plankType, totalTime, reps }) => {
-    result[plankType] = { total: totalTime, reps };
-  });
+  const result: Record<string, { total: number; reps: number }> = {};
+  totals.forEach(
+    (entry: { plankType: string; totalTime: number; reps: number }) => {
+      const { plankType, totalTime, reps } = entry;
+
+      result[plankType] = { total: totalTime, reps };
+    }
+  );
 
   return result;
 };
 
 // POST /saveLaps
-const saveLaps = async (req, res) => {
+const saveLaps = async (req: AuthenticatedRequest, res: Response) => {
   console.log("At lap saving...");
   console.log("Body:", req.body);
   console.log("User:", req.user);
   try {
     const { laps, plankType } = req.body;
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
 
     const validPlankTypes = [
       "basic plank",
@@ -114,10 +130,10 @@ const saveLaps = async (req, res) => {
 };
 
 // GET /getAllLaps
-const getAllLaps = async (req, res) => {
+const getAllLaps = async (req: AuthenticatedRequest, res: Response) => {
   console.log("At getting laps...");
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
 
     const getAllLaps = await Lap.find({ email }).sort({ entryDate: -1 });
 
@@ -131,10 +147,10 @@ const getAllLaps = async (req, res) => {
 };
 
 // GET /getTodaysProgress
-const getTodaysProgress = async (req, res) => {
+const getTodaysProgress = async (req: AuthenticatedRequest, res: Response) => {
   console.log("At getting today’s progress...");
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
 
     const now = new Date();
     const startOfDay = new Date(now.setHours(0, 0, 0, 0));
@@ -148,7 +164,7 @@ const getTodaysProgress = async (req, res) => {
     let totalReps = 0;
     let totalTime = 0;
     let longestPlank = 0;
-    let byType = {};
+    let byType: Record<string, { total: number; reps: number }> = {};
 
     for (const lap of laps) {
       totalReps += 1;
@@ -177,9 +193,12 @@ const getTodaysProgress = async (req, res) => {
 };
 
 // GET /getTodaysTotalsByType
-const getTodaysTotalsByType = async (req, res) => {
+const getTodaysTotalsByType = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const range = getDateRange("daily");
     const byType = await aggregateTotalsByType(email, range);
 
@@ -204,10 +223,10 @@ const getTodaysTotalsByType = async (req, res) => {
 };
 
 // GET /getMonthlyProgress
-const getMonthlyProgress = async (req, res) => {
+const getMonthlyProgress = async (req: Request, res: Response) => {
   console.log("At getting monthly progress...");
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const range = getDateRange("monthly");
 
     const laps = await Lap.find({
@@ -218,7 +237,7 @@ const getMonthlyProgress = async (req, res) => {
     let totalReps = 0;
     let totalTime = 0;
     let longestPlank = 0;
-    let byType = {};
+    let byType: Record<string, { total: number; reps: number }> = {};
 
     for (const lap of laps) {
       totalReps += 1;
@@ -247,9 +266,12 @@ const getMonthlyProgress = async (req, res) => {
 };
 
 // GET /getMonthlyTotalsByType
-const getMonthlyTotalsByType = async (req, res) => {
+const getMonthlyTotalsByType = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const range = getDateRange("monthly");
     const byType = await aggregateTotalsByType(email, range);
 
@@ -274,10 +296,10 @@ const getMonthlyTotalsByType = async (req, res) => {
 };
 
 // GET /getYearlyProgress
-const getYearlyProgress = async (req, res) => {
+const getYearlyProgress = async (req: AuthenticatedRequest, res: Response) => {
   console.log("At getting yearly progress...");
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const range = getDateRange("yearly");
 
     const laps = await Lap.find({
@@ -288,7 +310,7 @@ const getYearlyProgress = async (req, res) => {
     let totalReps = 0;
     let totalTime = 0;
     let longestPlank = 0;
-    let byType = {};
+    let byType: Record<string, { total: number; reps: number }> = {};
 
     for (const lap of laps) {
       totalReps += 1;
@@ -317,9 +339,12 @@ const getYearlyProgress = async (req, res) => {
 };
 
 // GET /getYearlyTotalsByType
-const getYearlyTotalsByType = async (req, res) => {
+const getYearlyTotalsByType = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const range = getDateRange("yearly");
     const byType = await aggregateTotalsByType(email, range);
 
@@ -344,17 +369,16 @@ const getYearlyTotalsByType = async (req, res) => {
 };
 
 // GET /getAllProgress
-const getAllProgress = async (req, res) => {
+const getAllProgress = async (req: AuthenticatedRequest, res: Response) => {
   console.log("At getting all progress...");
   try {
-    const email = req.user.email;
-
+    const email = (req as AuthenticatedRequest).user.email;
     const laps = await Lap.find({ email });
 
     let totalReps = 0;
     let totalTime = 0;
     let longestPlank = 0;
-    let byType = {};
+    let byType: Record<string, { total: number; reps: number }> = {};
 
     for (const lap of laps) {
       totalReps += 1;
@@ -383,9 +407,9 @@ const getAllProgress = async (req, res) => {
 };
 
 // GET /getAllTotalsByType
-const getAllTotalsByType = async (req, res) => {
+const getAllTotalsByType = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const email = req.user.email;
+    const email = (req as AuthenticatedRequest).user.email;
     const byType = await aggregateTotalsByType(email);
 
     let totalReps = 0;

@@ -44,5 +44,5 @@ app.listen(PORT, () => {
 
 app.use("/auth", authRoutes);
 
-// const lapRoutes = require("./routes/lapRoutes");
-// app.use("/laps", lapRoutes);
+const lapRoutes = require("./routes/lapRoutes");
+app.use("/laps", lapRoutes);

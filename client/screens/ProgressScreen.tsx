@@ -63,8 +63,9 @@ export default function ProgressScreen() {
   ];
 
   const fetchProgress = async (tab: string) => {
+    const base = "192.168.1.174";
     const route = routeMap[tab];
-    const url = `http://localhost:8000/laps/${route}`;
+    const url = `http://${base}:8000/laps/${route}`;
 
     const storedUser = await AsyncStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
