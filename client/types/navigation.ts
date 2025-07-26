@@ -5,6 +5,7 @@ export type RootStackParamList = {
   CreateAccountScreen: undefined;
   PlankScreen: undefined;
   ProgressScreen: undefined;
+  AchievementsScreen: undefined;
   LogoutScreen: undefined;
   EndingCreditsScreen: undefined;
 };

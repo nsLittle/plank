@@ -7,12 +7,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+type ProgressSummary = {
+  totalReps: number;
+  totalTime: number;
+  longestPlank: number;
+  byType: {
+    [key: string]: {
+      total: number;
+      reps: number;
+    };
+  };
+};
 
 export default function ProgressScreen() {
   const [progressToday, setProgressToday] = useState(null);
@@ -21,7 +34,9 @@ export default function ProgressScreen() {
   const [progressYear, setProgressYear] = useState(null);
   const [progressAll, setProgressAll] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("Today");
+  const [activeTab, setActiveTab] = useState<TabKey>("Today");
+
+  const navigation = useNavigation();
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -29,12 +44,14 @@ export default function ProgressScreen() {
     return `${m > 0 ? `${m}m ` : ""}${s} seconds`;
   };
 
-  const getAverageTime = (summaryProgress) => {
+  const getAverageTime = (summaryProgress: ProgressSummary | null) => {
     if (!summaryProgress || summaryProgress.totalReps === 0) return 0;
     return Math.round(summaryProgress.totalTime / summaryProgress.totalReps);
   };
 
-  const routeMap = {
+  type TabKey = "Today" | "Month" | "Year" | "All";
+
+  const routeMap: Record<TabKey, string> = {
     Today: "getTodaysProgress",
     Month: "getMonthlyProgress",
     Year: "getYearlyProgress",
@@ -65,7 +82,7 @@ export default function ProgressScreen() {
     "right side plank",
   ];
 
-  const fetchProgress = async (tab: string) => {
+  const fetchProgress = async (tab: TabKey) => {
     const base = "192.168.1.174";
     const route = routeMap[tab];
     const url = `http://${base}:8000/laps/${route}`;
@@ -292,7 +309,7 @@ export default function ProgressScreen() {
         onPress={() => {
           // assuming you're using React Navigation
           // otherwise let me know how you're routing
-          navigation.navigate("Achievements");
+          navigation.navigate("AchievementsScreen");
         }}>
         <Text style={styles.achievementsButtonText}>View Achievements</Text>
       </TouchableOpacity>
