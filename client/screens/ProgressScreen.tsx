@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -164,7 +165,11 @@ export default function ProgressScreen() {
   const summaryProgress = getSummaryProgress();
 
   return (
-    <View style={[styles.container, { flexGrow: 1 }]}>
+    <View
+      style={[
+        styles.container,
+        Platform.OS === "web" && { minHeight: "100vh", overflowY: "auto" },
+      ]}>
       {/* Tab Navigation */}
       <View style={styles.tabWrapper}>
         <View style={styles.tabPill}>
