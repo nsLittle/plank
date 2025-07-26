@@ -36,6 +36,14 @@ export default function ProgressScreen() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabKey>("Today");
 
+  const webScrollStyle =
+    Platform.OS === "web"
+      ? {
+          minHeight: "100vh" as any,
+          overflowY: "auto" as any,
+        }
+      : {};
+
   const navigation = useNavigation();
 
   const formatTime = (seconds: number) => {
@@ -182,11 +190,7 @@ export default function ProgressScreen() {
   const summaryProgress = getSummaryProgress();
 
   return (
-    <View
-      style={[
-        styles.container,
-        Platform.OS === "web" && { minHeight: "100vh", overflowY: "auto" },
-      ]}>
+    <View style={StyleSheet.flatten([styles.container, webScrollStyle])}>
       {/* Tab Navigation */}
       <View style={styles.tabWrapper}>
         <View style={styles.tabPill}>
@@ -194,7 +198,7 @@ export default function ProgressScreen() {
             <TouchableOpacity
               key={label}
               style={[styles.tab, activeTab === label && styles.tabActive]}
-              onPress={() => setActiveTab(label)}>
+              onPress={() => setActiveTab(label as TabKey)}>
               <Text
                 style={[
                   styles.tabText,
@@ -302,17 +306,17 @@ export default function ProgressScreen() {
               ))}
             </View>
           )}
+          <TouchableOpacity
+            style={styles.achievementsButton}
+            onPress={() => {
+              // assuming you're using React Navigation
+              // otherwise let me know how you're routing
+              navigation.navigate("AchievementsScreen");
+            }}>
+            <Text style={styles.achievementsButtonText}>View Achievements</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
-      <TouchableOpacity
-        style={styles.achievementsButton}
-        onPress={() => {
-          // assuming you're using React Navigation
-          // otherwise let me know how you're routing
-          navigation.navigate("AchievementsScreen");
-        }}>
-        <Text style={styles.achievementsButtonText}>View Achievements</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -358,7 +362,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingTop: 10,
-    paddingBottom: 80,
+    paddingBottom: 120,
   },
   section: {
     width: "100%",
