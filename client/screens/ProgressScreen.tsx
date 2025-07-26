@@ -287,6 +287,15 @@ export default function ProgressScreen() {
           )}
         </ScrollView>
       </View>
+      <TouchableOpacity
+        style={styles.achievementsButton}
+        onPress={() => {
+          // assuming you're using React Navigation
+          // otherwise let me know how you're routing
+          navigation.navigate("Achievements");
+        }}>
+        <Text style={styles.achievementsButtonText}>View Achievements</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -407,5 +416,19 @@ const styles = StyleSheet.create({
   sessionDuration: {
     fontSize: 14,
     color: "#555",
+  },
+  achievementsButton: {
+    backgroundColor: "#A020F0",
+    borderRadius: 10,
+    marginTop: 16,
+    paddingVertical: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  achievementsButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
