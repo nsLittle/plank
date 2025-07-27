@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,7 +26,7 @@ export default function PlankScreen() {
 
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const [plankType, setPlankType] = useState<PlankType | null>(null);
+  const [plankType, setPlankType] = useState<PlankType>(PlankType.PICK);
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const [time, setTime] = useState<number>(0);
@@ -33,6 +34,15 @@ export default function PlankScreen() {
 
   const timerRef = useRef<number | null>(null);
   const sessionRef = useRef<PlankSessions>(new PlankSessions());
+
+  const imageMap: Partial<Record<PlankType, any>> = {
+    [PlankType.BASIC]: require("../assets/basic-plank.png"),
+    [PlankType.ELBOW]: require("../assets/elbow-plank.png"),
+    [PlankType.RAISED_RIGHT_LEG]: require("../assets/raised-right-leg-plank.png"),
+    [PlankType.RAISED_LEFT_LEG]: require("../assets/raised-left-leg-plank.png"),
+    [PlankType.LEFT_SIDE]: require("../assets/left-side-plank.png"),
+    [PlankType.RIGHT_SIDE]: require("../assets/right-side-plank.png"),
+  };
 
   const handleStartStop = () => {
     setIsActive((prev) => !prev);
@@ -162,10 +172,6 @@ export default function PlankScreen() {
       </Portal>
 
       <View style={sharedStyles.body}>
-        {/* <View style={styles.headerWrapper}> */}
-        {/* <View style={styles.titleRow}>
-            <View style={styles.dropDownWrapperTwo}></View>
-            <Text style={sharedStyles.bodyTitleText}>Start Planks</Text> */}
         <View style={styles.dropDownWrapper}>
           <TouchableOpacity
             onPress={() => setShowMenu(!showMenu)}
@@ -184,12 +190,7 @@ export default function PlankScreen() {
           </TouchableOpacity>
 
           {showMenu && (
-            <>
-              {/* <TouchableOpacity
-                style={StyleSheet.absoluteFill}
-                activeOpacity={1}
-                onPress={() => setShowMenu(false)}
-              /> */}
+            <View style={styles.absoluteMenuWrapper}>
               <View style={styles.dropDownMenu}>
                 {Object.values(PlankType).map((type) => (
                   <TouchableOpacity
@@ -202,9 +203,23 @@ export default function PlankScreen() {
                   </TouchableOpacity>
                 ))}
               </View>
-            </>
+            </View>
           )}
         </View>
+
+        {plankType && imageMap[plankType] && (
+          <View style={{ alignItems: "center", marginVertical: 16 }}>
+            <Image
+              source={imageMap[plankType]}
+              style={{
+                width: 260,
+                height: 180,
+                resizeMode: "contain",
+              }}
+            />
+          </View>
+        )}
+
         {/* </View> */}
 
         <Text style={styles.timer}>{time} sec</Text>
@@ -231,17 +246,6 @@ export default function PlankScreen() {
 }
 
 const styles = StyleSheet.create({
-  // headerWrapper: {
-  //   width: "100%",
-  //   alignItems: "center",
-  //   marginBottom: 24,
-  // },
-  // titleRow: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   gap: 12,
-  // },
   dropDownWrapper: {
     marginTop: 24,
     marginLeft: 12,
@@ -249,6 +253,14 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     elevation: 9999,
   },
+  absoluteMenuWrapper: {
+    position: "absolute",
+    top: 90, // adjust to match where dropdown button is on screen
+    left: 12,
+    width: 260,
+    zIndex: 9999,
+  },
+
   dropDownWrapperTwo: {
     width: 260,
     marginRight: 12,

@@ -1,8 +1,9 @@
 export enum PlankType {
+  PICK = "pick plank type",
   BASIC = "basic plank",
   ELBOW = "elbow plank",
-  RAISED_LEG_RIGHT = "raised leg right",
-  RAISED_LEG_LEFT = "raised leg left",
+  RAISED_RIGHT_LEG = "raised right leg",
+  RAISED_LEFT_LEG = "raised left leg",
   LEFT_SIDE = "left side plank",
   RIGHT_SIDE = "right side plank",
 }
