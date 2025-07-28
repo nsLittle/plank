@@ -12,6 +12,7 @@ const {
   getYearlyTotalsByType,
   getAllProgress,
   getAllTotalsByType,
+  getAchievements,
 } = require("../controllers/lapController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -26,5 +27,6 @@ router.get("/getYearlyProgress", protect, getYearlyProgress);
 router.get("/getYearlyTotalsByType", protect, getYearlyTotalsByType);
 router.get("/getAllProgress", protect, getAllProgress);
 router.get("/getAllTotalsByType", protect, getAllTotalsByType);
+router.get("/getAchievements", protect, getAchievements);
 
 module.exports = router;

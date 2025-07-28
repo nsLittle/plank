@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
 
@@ -15,6 +17,50 @@ export default function AchievementsScreen() {
     "AchievementsScreen"
   >;
   const navigation = useNavigation<NavigationProp>();
+
+  const [achievements, setAchievements] = useState<null | {
+    firstPlankDate: string | null;
+    longestPlankTime: number;
+    streaksCompleted: number[];
+    dailyTotalsMet: { date: string; minutes: number }[];
+    allTypesCompleted: string[];
+  }>(null);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      const base = "192.168.1.174";
+
+      const storedUser = await AsyncStorage.getItem("user");
+      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+      const token = parsedUser?.token;
+
+      if (!token) {
+        console.error("No token found in AsyncStorage");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://${base}:8000/laps/getAchievements`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("Achievements fetched:", data);
+        setAchievements(data);
+      } catch (error) {
+        console.error("Error fetching achievements:", error);
+      }
+    };
+
+    fetchAchievements();
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { marginTop: 250 }]}>

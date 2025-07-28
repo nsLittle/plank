@@ -468,6 +468,41 @@ const getAllTotalsByType = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
+// GET /achievements
+const getAchievements = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const email = req.user.email;
+
+    // 1. First plank date
+    const firstLap = await Lap.findOne({ email }).sort({ entryDate: 1 });
+
+    // 2. Longest plank time
+    const longestLap = await Lap.findOne({ email }).sort({ time: -1 });
+
+    // If no laps exist
+    if (!firstLap || !longestLap) {
+      return res.status(200).json({
+        firstPlankDate: null,
+        longestPlankTime: 0,
+        streaksCompleted: [],
+        dailyTotalsMet: [],
+        allTypesCompleted: [],
+      });
+    }
+
+    res.status(200).json({
+      firstPlankDate: firstLap.entryDate.toISOString().split("T")[0],
+      longestPlankTime: longestLap.time,
+      streaksCompleted: [],
+      dailyTotalsMet: [],
+      allTypesCompleted: [],
+    });
+  } catch (error) {
+    console.error("Error fetching achievements:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 module.exports = {
   saveLaps,
   getAllLaps,
@@ -480,4 +515,5 @@ module.exports = {
   getYearlyTotalsByType,
   getAllProgress,
   getAllTotalsByType,
+  getAchievements,
 };
